@@ -1,26 +1,26 @@
 {
-  "title": "奈若",
-  "author": "nyra",
+  "title": "Nryaの幽",
+  "author": "Nyra",
   "handle": "nianyou",
   "avatar": "uploads/1795158194215-头像.png",
-  "statusText": "深夜写码，白天补觉",
+  "statusText": "存档写入中…",
   "location": "江苏 · 徐州",
   "navLabels": {
-    "home": "扉页",
+    "home": "客厅",
     "moments": "朝夕",
-    "archive": "纪事",
-    "shelf": "珍藏",
-    "about": "自叙"
+    "archive": "归档",
+    "shelf": "拾光",
+    "about": "屋主"
   },
   "startDate": "2026-11-20",
   "typewriterPhrases": [
-    "深夜写码，白天补觉",
-    "正在折腾好玩的小东西",
-    "按 ` 键或右键解锁彩蛋"
+    "今天也在认真过日子",
+    "Bug改完一个，又出两个QAQ",
+    "摸鱼ing"
   ],
-  "heroHeadline": "欢迎闯入",
-  "heroHeadlineAccent": "我的自留地",
-  "heroIntro": "写代码，看闲书，存几张日常切片。",
+  "heroHeadline": "正在加载",
+  "heroHeadlineAccent": "Nyra的日常存档",
+  "heroIntro": "把散落的念头装订成册，留几页给日常和热爱",
   "polaroids": [
     {
       "src": "uploads/window-sunlight.svg",
@@ -35,11 +35,11 @@
       "caption": "18:10 · 晚风"
     }
   ],
-  "archiveBio": "",
-  "aboutContent": "留一块不受算法打扰的地方，放自己的长文、随手拍和私藏清单。\n\n平时偏爱结构克制、没有多余依赖的工具。有意思的想法就写成文章，懒得展开就丢进日常流里。\n\n### 常折腾的方向\n\n- 零依赖原生架构与本地优先工具\n- Web Audio / Canvas 交互实验\n- 随手记下的书影与日常切片",
+  "archiveBio": "三分钟热度的思考，和一些深夜煽情。",
+  "aboutContent": "嗨，我是 **Nyra**，坐标江苏徐州。\n\n留一块小角落，用来记录日常存档、学习笔记，以及一些没处安放的奇思妙想。有意思的念头就写成长文，懒得展开的瞬间就随手丢进动态里。\n\n### 🏠 小窝导览\n\n- **朝夕**：朋友圈式的日常流，放随手拍的光影与当下的碎碎念\n- **归档**：正经的学习 / 技术笔记，偶尔夹杂深夜树洞与长篇吐槽\n- **拾光**：打过的游戏、追过的番剧和私藏书影清单\n\n### 🎮 日常构成的成分\n\n- 写代码与课业折腾（在制造 Bug 和修 Bug 之间反复横跳）\n- 游戏与番剧爱好者，重度摸鱼选手\n- 遇到好看的晚霞和街角会忍不住按快门",
   "categories": [
-    "造物",
-    "随笔",
-    "夜记"
+    "日常",
+    "碎碎念",
+    "笔记"
   ]
 }
