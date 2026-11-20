@@ -1,0 +1,512 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-theme="light" data-aura="prism">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>自叙 · 自留地</title>
+  <script>
+    (function() {
+      var saved = localStorage.getItem('blog-theme');
+      if (saved === 'dark' || saved === 'light') {
+        document.documentElement.setAttribute('data-theme', saved);
+      }
+      var aura = localStorage.getItem('blog-aura');
+      if (aura) {
+        document.documentElement.setAttribute('data-aura', aura);
+      }
+      if (false && sessionStorage.getItem('guest-preview') === '1') {
+        document.documentElement.classList.add('guest-preview');
+      }
+    })();
+  </script>
+  <link rel="stylesheet" href="assets/styles.css" />
+  
+  <link rel="alternate" type="application/rss+xml" title="自留地" href="rss.xml" />
+</head>
+<body>
+  <div id="scroll-progress"></div>
+  <div id="cursor-ring" class="cursor-ring"></div>
+  <div class="film-grain" aria-hidden="true"></div>
+  <canvas id="fx-canvas" class="fx-canvas"></canvas>
+
+  <div class="ambient-canvas">
+    <div class="aurora-blob b1"></div>
+    <div class="aurora-blob b2"></div>
+    <div class="aurora-blob b3"></div>
+    <div class="aurora-blob b4"></div>
+    <div class="aurora-blob b5"></div>
+  </div>
+
+  <div class="nav-wrapper">
+    <header id="floating-nav" class="floating-nav" data-has-reading="0">
+      <a href="index.html" class="brand">
+        <img class="brand-avatar" data-live-avatar src="uploads/1795158194215-头像.png" alt="Nianyou" />
+        <span class="brand-title font-serif-cn">自留地</span>
+      </a>
+
+      <div class="nav-center-stage">
+        <nav id="nav-pills-wrap" class="nav-center-pills">
+          <span id="nav-glider" class="nav-glider"></span>
+          <a href="index.html" data-nav-key="home" class="">扉页</a>
+          <a href="moments.html" data-nav-key="moments" class="">朝夕</a>
+          <a href="archive.html" data-nav-key="archive" class="">纪事</a>
+          <a href="shelf.html" data-nav-key="shelf" class="">珍藏</a>
+          <a href="about.html" data-nav-key="about" class="active">自叙</a>
+        </nav>
+        <div id="nav-reading-title" class="nav-reading-title font-serif-cn" title="点击回到文章顶部"></div>
+      </div>
+
+      <div class="nav-actions">
+        
+        <button type="button" id="aura-open-btn" class="pill-action-btn aura-pill-btn" title="切换幻彩光谱 (C)">
+          <span class="aura-rainbow-dot"></span>
+        </button>
+        <button type="button" id="sfx-toggle-btn" class="pill-action-btn sfx-pill-btn" title="全站总声音开关 (V)">
+          <span id="sfx-ico-on"><svg class="ico" viewBox="0 0 24 24"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M15.54 8.46a5 5 0 0 1 0 7.07"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14"/></svg></span>
+          <span id="sfx-ico-off" style="display:none;"><svg class="ico" viewBox="0 0 24 24"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><line x1="22" x2="16" y1="9" y2="15"/><line x1="16" x2="22" y1="9" y2="15"/></svg></span>
+        </button>
+        <button type="button" id="terminal-open" class="pill-action-btn" title="极客终端 (~)">
+          <svg class="ico" viewBox="0 0 24 24"><polyline points="4 17 10 11 4 5"/><line x1="12" x2="20" y1="19" y2="19"/></svg>
+        </button>
+        <button type="button" id="search-open" class="pill-action-btn" title="搜索 (Ctrl+K)">
+          <svg class="ico" viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
+        </button>
+        <button type="button" id="theme-toggle" class="pill-action-btn" title="切换日夜">
+          <span id="theme-icon-sun"><svg class="ico" viewBox="0 0 24 24"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"/></svg></span>
+          <span id="theme-icon-moon" style="display:none;"><svg class="ico" viewBox="0 0 24 24"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg></span>
+        </button>
+        
+      </div>
+    </header>
+
+    
+  </div>
+
+  <div id="app-view">
+    
+  <main class="container-main gh-profile-stage">
+    <div class="gh-profile-grid">
+      <!-- Left Sticky GitHub Profile Sidebar -->
+      <aside class="gh-sidebar">
+        <div class="gh-avatar-stage">
+          <div class="gh-avatar-circle" >
+            <img data-live-avatar src="uploads/1795158194215-头像.png" alt="Nianyou" data-zoomable />
+            
+          </div>
+
+          <button type="button" id="gh-status-pill" class="gh-status-bubble" title="打开终端">
+            <span class="pulse-dot"></span>
+            <span id="gh-status-text" class="gh-status-bubble-text">深夜写码，白天补觉</span>
+          </button>
+
+          
+        </div>
+
+        <div class="gh-names-block">
+          <h1 class="gh-fullname">Nianyou</h1>
+          <div class="gh-username font-mono-num">@nianyou</div>
+        </div>
+
+        <p class="gh-bio">写代码，看闲书，存几张日常切片。</p>
+
+        <button type="button" class="gh-action-btn" data-random-walk>随机漫游一篇</button>
+
+        <div class="gh-meta-list">
+          <div class="gh-meta-row">
+            <svg class="ico" viewBox="0 0 24 24" style="width:13px;height:13px;"><path d="m19 21-7-4-7 4V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2v16z"/></svg>
+            <span data-owner-text="4 篇 · 3 动态 · 4 收藏" data-public-text="4 篇 · 3 动态 · 4 收藏">4 篇 · 3 动态 · 4 收藏</span>
+          </div>
+          <div class="gh-meta-row" id="gh-loc-row" style="">
+            <svg class="ico" viewBox="0 0 24 24" style="width:12px;height:12px;"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg>
+            <span data-live-location>江苏 · 徐州</span>
+            
+          </div>
+          <div class="gh-meta-row">
+            <svg class="ico" viewBox="0 0 24 24" style="width:13.5px;height:13.5px;"><rect width="18" height="18" x="3" y="4" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>
+            <span>始于 <span class="font-mono-num">2026.10.01</span> · <strong data-countup="50">50</strong> 天</span>
+          </div>
+        </div>
+
+        <div class="gh-sidebar-divider"></div>
+
+        <div>
+          <div class="gh-sidebar-label font-mono-num">HIGHLIGHTS</div>
+          <div class="gh-badge-cloud">
+            <span class="gh-mini-badge">造物</span><span class="gh-mini-badge">随笔</span><span class="gh-mini-badge">夜记</span><span class="gh-mini-badge">Markdown</span><span class="gh-mini-badge">Zero-Dep</span><span class="gh-mini-badge">Web Audio</span>
+          </div>
+        </div>
+      </aside>
+
+      <!-- Right Main GitHub Column: README.md + Pinned + 45-Week Contribution Graph + Activity -->
+      <div class="gh-main-col">
+        <!-- 1. handle / README.md -->
+        <section class="gh-readme-card">
+          <div class="gh-readme-head">
+            <span class="font-mono-num" style="font-size:12.5px; color:var(--ink-secondary);">nianyou / <strong style="color:var(--ink);">README.md</strong></span>
+            
+          </div>
+          <div class="prose gh-readme-body">
+            <p>留一块不受算法打扰的地方，放自己的长文、随手拍和私藏清单。</p>
+<p>平时偏爱结构克制、没有多余依赖的工具。有意思的想法就写成文章，懒得展开就丢进日常流里。</p>
+<h3 id="section-1">常折腾的方向</h3>
+<ul class=""><li>零依赖原生架构与本地优先工具</li><li>Web Audio / Canvas 交互实验</li><li>随手记下的书影与日常切片</li></ul>
+          </div>
+        </section>
+
+        <!-- 2. Pinned Posts (2x2 GitHub Repo Card Grid) -->
+        <section>
+          <div class="gh-sec-header">
+            <span class="gh-sec-title">Pinned</span>
+            <a href="archive.html" class="font-mono-num gh-sec-more">全部文章 →</a>
+          </div>
+          <div class="gh-pinned-grid">
+            
+              <a href="posts/2026-11-19-writing-guide.html" class="gh-pin-card"  data-spotlight data-tilt>
+                <span class="holo-glare"></span>
+                <div>
+                  <div class="gh-pin-top">
+                    <span class="gh-pin-title"><svg class="ico" viewBox="0 0 24 24" style="width:14px;height:14px;"><path d="M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H20v20H6.5a2.5 2.5 0 0 1 0-5H20"/></svg><span>手搓一座零依赖个人站：把赛博领地握在自己手里</span></span>
+                    <span class="gh-vis-pill  font-mono-num">Public</span>
+                  </div>
+                  <p class="gh-pin-desc">甩掉几百兆的 node_modules，只留纯文本、本地文件夹和自己写得懂的几百行代码。</p>
+                </div>
+                <div class="gh-pin-foot font-mono-num">
+                  <span style="display:inline-flex; align-items:center; gap:5px;">
+                    <span class="gh-lang-dot" style="background:#F0523A;"></span>
+                    <span>造物</span>
+                  </span>
+                  <span>206 字</span>
+                  <span>11.19</span>
+                </div>
+              </a>
+              <a href="posts/2026-11-12-zero-framework.html" class="gh-pin-card"  data-spotlight data-tilt>
+                <span class="holo-glare"></span>
+                <div>
+                  <div class="gh-pin-top">
+                    <span class="gh-pin-title"><svg class="ico" viewBox="0 0 24 24" style="width:14px;height:14px;"><path d="M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H20v20H6.5a2.5 2.5 0 0 1 0-5H20"/></svg><span>把工具做减法：为什么这个博客没有用任何前端框架</span></span>
+                    <span class="gh-vis-pill  font-mono-num">Public</span>
+                  </div>
+                  <p class="gh-pin-desc">很多时候想写博客，结果光折腾框架、装几百兆依赖包、调主题报错就把热情消耗光了。 这次干脆换了个思路：只保留 Astro 最让人舒服的设计理念——内容存成干净的纯文本、最终输出零冗余的纯静态网页、交互只在必要的地方轻量挂载，但底层完…</p>
+                </div>
+                <div class="gh-pin-foot font-mono-num">
+                  <span style="display:inline-flex; align-items:center; gap:5px;">
+                    <span class="gh-lang-dot" style="background:#F0523A;"></span>
+                    <span>造物</span>
+                  </span>
+                  <span>227 字</span>
+                  <span>11.12</span>
+                </div>
+              </a>
+              <a href="posts/2026-10-26-weekend-movie.html" class="gh-pin-card"  data-spotlight data-tilt>
+                <span class="holo-glare"></span>
+                <div>
+                  <div class="gh-pin-top">
+                    <span class="gh-pin-title"><svg class="ico" viewBox="0 0 24 24" style="width:14px;height:14px;"><path d="M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H20v20H6.5a2.5 2.5 0 0 1 0-5H20"/></svg><span>周末重看《完美的日子》：留一点不用倍速的时间</span></span>
+                    <span class="gh-vis-pill  font-mono-num">Public</span>
+                  </div>
+                  <p class="gh-pin-desc">周六晚上关掉手机通知，把文德斯那部片子又放了一遍。没有激烈冲突，只有清晨扫落叶的沙沙声、车载磁带里的老摇滚，还有午休抬头拍下的树影。 现在看什么都习惯按二倍速，反而这种慢得近乎固执的日常节奏最让人安心。看完顺手泡了杯热茶，觉得这个…</p>
+                </div>
+                <div class="gh-pin-foot font-mono-num">
+                  <span style="display:inline-flex; align-items:center; gap:5px;">
+                    <span class="gh-lang-dot" style="background:#4F6EF7;"></span>
+                    <span>随笔</span>
+                  </span>
+                  <span>112 字</span>
+                  <span>10.26</span>
+                </div>
+              </a>
+              <a href="posts/2025-12-20-year-end-note.html" class="gh-pin-card"  data-spotlight data-tilt>
+                <span class="holo-glare"></span>
+                <div>
+                  <div class="gh-pin-top">
+                    <span class="gh-pin-title"><svg class="ico" viewBox="0 0 24 24" style="width:14px;height:14px;"><path d="M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H20v20H6.5a2.5 2.5 0 0 1 0-5H20"/></svg><span>年底清理旧备忘录的一点感想</span></span>
+                    <span class="gh-vis-pill  font-mono-num">Public</span>
+                  </div>
+                  <p class="gh-pin-desc">趁着年底把手机和电脑里攒了一整年的零碎备忘录翻了一遍。很多当时觉得天大的烦心事，隔了大半年再看，其实也就两行字的事。 删掉了大半过期的待办，只留下几段当时随手记下的对话和旅途片段。有些东西还是落成干净的纯文本存起来最踏实。</p>
+                </div>
+                <div class="gh-pin-foot font-mono-num">
+                  <span style="display:inline-flex; align-items:center; gap:5px;">
+                    <span class="gh-lang-dot" style="background:#4F6EF7;"></span>
+                    <span>随笔</span>
+                  </span>
+                  <span>103 字</span>
+                  <span>12.20</span>
+                </div>
+              </a>
+          </div>
+        </section>
+
+        <!-- 3. Authentic 45-Week GitHub Contribution Calendar (11px Squares + Mon/Wed/Fri) -->
+        <section class="gh-contrib-card">
+          <div class="gh-contrib-head">
+            <span class="gh-sec-title" data-owner-text="过去一年 7 次创作记录" data-public-text="过去一年 7 次创作记录">过去一年 7 次创作记录</span>
+            <span id="gh-contrib-tip" class="font-mono-num" style="font-size:11.5px; color:var(--ink-muted);">42 WEEKS</span>
+          </div>
+
+          <div class="gh-contrib-scroll">
+            <div class="gh-cal-layout">
+              <div class="gh-weekdays font-mono-num">
+                <span></span>
+                <span>Mon</span>
+                <span></span>
+                <span>Wed</span>
+                <span></span>
+                <span>Fri</span>
+                <span></span>
+              </div>
+              <div style="flex:1; min-width:0;">
+                <div class="gh-months-row font-mono-num" style="grid-template-columns:repeat(42, 1fr);">
+                  <span style="grid-column:1;">2月</span><span style="grid-column:5;">3月</span><span style="grid-column:10;">4月</span><span style="grid-column:14;">5月</span><span style="grid-column:19;">6月</span><span style="grid-column:23;">7月</span><span style="grid-column:27;">8月</span><span style="grid-column:32;">9月</span><span style="grid-column:36;">10月</span><span style="grid-column:40;">11月</span>
+                </div>
+                <div class="gh-contrib-matrix" style="grid-template-columns:repeat(42, 1fr);">
+                  <span class="gh-day" data-level="0"  data-tip="2026-02-01 · 无记录" ></span><span class="gh-day" data-level="0"  data-tip="2026-02-02 · 无记录" ></span><span class="gh-day" data-level="0"  data-tip="2026-02-03 · 无记录" ></span><span class="gh-day" data-level="0"  data-tip="2026-02-04 · 无记录" ></span><span class="gh-day" data-level="0"  data-tip="2026-02-05 · 无记录" ></span><span class="gh-day" data-level="0"  data-tip="2026-02-06 · 无记录" ></span><span class="gh-day" data-level="0"  data-tip="2026-02-07 · 无记录" ></span><span class="gh-day" data-level="0"  data-tip="2026-02-08 · 无记录" ></span><span class="gh-day" data-level="0"  data-tip="2026-02-09 · 无记录" ></span><span class="gh-day" data-level="0"  data-tip="2026-02-10 · 无记录" ></span><span class="gh-day" data-level="0"  data-tip="2026-02-11 · 无记录" ></span><span class="gh-day" data-level="0"  data-tip="2026-02-12 · 无记录" ></span><span class="gh-day" data-level="0"  data-tip="2026-02-13 · 无记录" ></span><span class="gh-day" data-level="0"  data-tip="2026-02-14 · 无记录" ></span><span class="gh-day" data-level="0"  data-tip="2026-02-15 · 无记录" ></span><span class="gh-day" data-level="0"  data-tip="2026-02-16 · 无记录" ></span><span class="gh-day" data-level="0"  data-tip="2026-02-17 · 无记录" ></span><span class="gh-day" data-level="0"  data-tip="2026-02-18 · 无记录" ></span><span class="gh-day" data-level="0"  data-tip="2026-02-19 · 无记录" ></span><span class="gh-day" data-level="0"  data-tip="2026-02-20 · 无记录" ></span><span class="gh-day" data-level="0"  data-tip="2026-02-21 · 无记录" ></span><span class="gh-day" data-level="0"  data-tip="2026-02-22 · 无记录" ></span><span class="gh-day" data-level="0"  data-tip="2026-02-23 · 无记录" ></span><span class="gh-day" data-level="0"  data-tip="2026-02-24 · 无记录" ></span><span class="gh-day" data-level="0"  data-tip="2026-02-25 · 无记录" ></span><span class="gh-day" data-level="0"  data-tip="2026-02-26 · 无记录" ></span><span class="gh-day" data-level="0"  data-tip="2026-02-27 · 无记录" ></span><span class="gh-day" data-level="0"  data-tip="2026-02-28 · 无记录" ></span><span class="gh-day" data-level="0"  data-tip="2026-03-01 · 无记录" ></span><span class="gh-day" data-level="0"  data-tip="2026-03-02 · 无记录" ></span><span class="gh-day" data-level="0"  data-tip="2026-03-03 · 无记录" ></span><span class="gh-day" data-level="0"  data-tip="2026-03-04 · 无记录" ></span><span class="gh-day" data-level="0"  data-tip="2026-03-05 · 无记录" ></span><span class="gh-day" data-level="0"  data-tip="2026-03-06 · 无记录" ></span><span class="gh-day" data-level="0"  data-tip="2026-03-07 · 无记录" ></span><span class="gh-day" data-level="0"  data-tip="2026-03-08 · 无记录" ></span><span class="gh-day" data-level="0"  data-tip="2026-03-09 · 无记录" ></span><span class="gh-day" data-level="0"  data-tip="2026-03-10 · 无记录" ></span><span class="gh-day" data-level="0"  data-tip="2026-03-11 · 无记录" ></span><span class="gh-day" data-level="0"  data-tip="2026-03-12 · 无记录" ></span><span class="gh-day" data-level="0"  data-tip="2026-03-13 · 无记录" ></span><span class="gh-day" data-level="0"  data-tip="2026-03-14 · 无记录" ></span><span class="gh-day" data-level="0"  data-tip="2026-03-15 · 无记录" ></span><span class="gh-day" data-level="0"  data-tip="2026-03-16 · 无记录" ></span><span class="gh-day" data-level="0"  data-tip="2026-03-17 · 无记录" ></span><span class="gh-day" data-level="0"  data-tip="2026-03-18 · 无记录" ></span><span class="gh-day" data-level="0"  data-tip="2026-03-19 · 无记录" ></span><span class="gh-day" data-level="0"  data-tip="2026-03-20 · 无记录" ></span><span class="gh-day" data-level="0"  data-tip="2026-03-21 · 无记录" ></span><span class="gh-day" data-level="0"  data-tip="2026-03-22 · 无记录" ></span><span class="gh-day" data-level="0"  data-tip="2026-03-23 · 无记录" ></span><span class="gh-day" data-level="0"  data-tip="2026-03-24 · 无记录" ></span><span class="gh-day" data-level="0"  data-tip="2026-03-25 · 无记录" ></span><span class="gh-day" data-level="0"  data-tip="2026-03-26 · 无记录" ></span><span class="gh-day" data-level="0"  data-tip="2026-03-27 · 无记录" ></span><span class="gh-day" data-level="0"  data-tip="2026-03-28 · 无记录" ></span><span class="gh-day" data-level="0"  data-tip="2026-03-29 · 无记录" ></span><span class="gh-day" data-level="0"  data-tip="2026-03-30 · 无记录" ></span><span class="gh-day" data-level="0"  data-tip="2026-03-31 · 无记录" ></span><span class="gh-day" data-level="0"  data-tip="2026-04-01 · 无记录" ></span><span class="gh-day" data-level="0"  data-tip="2026-04-02 · 无记录" ></span><span class="gh-day" data-level="0"  data-tip="2026-04-03 · 无记录" ></span><span class="gh-day" data-level="0"  data-tip="2026-04-04 · 无记录" ></span><span class="gh-day" data-level="0"  data-tip="2026-04-05 · 无记录" ></span><span class="gh-day" data-level="0"  data-tip="2026-04-06 · 无记录" ></span><span class="gh-day" data-level="0"  data-tip="2026-04-07 · 无记录" ></span><span class="gh-day" data-level="0"  data-tip="2026-04-08 · 无记录" ></span><span class="gh-day" data-level="0"  data-tip="2026-04-09 · 无记录" ></span><span class="gh-day" data-level="0"  data-tip="2026-04-10 · 无记录" ></span><span class="gh-day" data-level="0"  data-tip="2026-04-11 · 无记录" ></span><span class="gh-day" data-level="0"  data-tip="2026-04-12 · 无记录" ></span><span class="gh-day" data-level="0"  data-tip="2026-04-13 · 无记录" ></span><span class="gh-day" data-level="0"  data-tip="2026-04-14 · 无记录" ></span><span class="gh-day" data-level="0"  data-tip="2026-04-15 · 无记录" ></span><span class="gh-day" data-level="0"  data-tip="2026-04-16 · 无记录" ></span><span class="gh-day" data-level="0"  data-tip="2026-04-17 · 无记录" ></span><span class="gh-day" data-level="0"  data-tip="2026-04-18 · 无记录" ></span><span class="gh-day" data-level="0"  data-tip="2026-04-19 · 无记录" ></span><span class="gh-day" data-level="0"  data-tip="2026-04-20 · 无记录" ></span><span class="gh-day" data-level="0"  data-tip="2026-04-21 · 无记录" ></span><span class="gh-day" data-level="0"  data-tip="2026-04-22 · 无记录" ></span><span class="gh-day" data-level="0"  data-tip="2026-04-23 · 无记录" ></span><span class="gh-day" data-level="0"  data-tip="2026-04-24 · 无记录" ></span><span class="gh-day" data-level="0"  data-tip="2026-04-25 · 无记录" ></span><span class="gh-day" data-level="0"  data-tip="2026-04-26 · 无记录" ></span><span class="gh-day" data-level="0"  data-tip="2026-04-27 · 无记录" ></span><span class="gh-day" data-level="0"  data-tip="2026-04-28 · 无记录" ></span><span class="gh-day" data-level="0"  data-tip="2026-04-29 · 无记录" ></span><span class="gh-day" data-level="0"  data-tip="2026-04-30 · 无记录" ></span><span class="gh-day" data-level="0"  data-tip="2026-05-01 · 无记录" ></span><span class="gh-day" data-level="0"  data-tip="2026-05-02 · 无记录" ></span><span class="gh-day" data-level="0"  data-tip="2026-05-03 · 无记录" ></span><span class="gh-day" data-level="0"  data-tip="2026-05-04 · 无记录" ></span><span class="gh-day" data-level="0"  data-tip="2026-05-05 · 无记录" ></span><span class="gh-day" data-level="0"  data-tip="2026-05-06 · 无记录" ></span><span class="gh-day" data-level="0"  data-tip="2026-05-07 · 无记录" ></span><span class="gh-day" data-level="0"  data-tip="2026-05-08 · 无记录" ></span><span class="gh-day" data-level="0"  data-tip="2026-05-09 · 无记录" ></span><span class="gh-day" data-level="0"  data-tip="2026-05-10 · 无记录" ></span><span class="gh-day" data-level="0"  data-tip="2026-05-11 · 无记录" ></span><span class="gh-day" data-level="0"  data-tip="2026-05-12 · 无记录" ></span><span class="gh-day" data-level="0"  data-tip="2026-05-13 · 无记录" ></span><span class="gh-day" data-level="0"  data-tip="2026-05-14 · 无记录" ></span><span class="gh-day" data-level="0"  data-tip="2026-05-15 · 无记录" ></span><span class="gh-day" data-level="0"  data-tip="2026-05-16 · 无记录" ></span><span class="gh-day" data-level="0"  data-tip="2026-05-17 · 无记录" ></span><span class="gh-day" data-level="0"  data-tip="2026-05-18 · 无记录" ></span><span class="gh-day" data-level="0"  data-tip="2026-05-19 · 无记录" ></span><span class="gh-day" data-level="0"  data-tip="2026-05-20 · 无记录" ></span><span class="gh-day" data-level="0"  data-tip="2026-05-21 · 无记录" ></span><span class="gh-day" data-level="0"  data-tip="2026-05-22 · 无记录" ></span><span class="gh-day" data-level="0"  data-tip="2026-05-23 · 无记录" ></span><span class="gh-day" data-level="0"  data-tip="2026-05-24 · 无记录" ></span><span class="gh-day" data-level="0"  data-tip="2026-05-25 · 无记录" ></span><span class="gh-day" data-level="0"  data-tip="2026-05-26 · 无记录" ></span><span class="gh-day" data-level="0"  data-tip="2026-05-27 · 无记录" ></span><span class="gh-day" data-level="0"  data-tip="2026-05-28 · 无记录" ></span><span class="gh-day" data-level="0"  data-tip="2026-05-29 · 无记录" ></span><span class="gh-day" data-level="0"  data-tip="2026-05-30 · 无记录" ></span><span class="gh-day" data-level="0"  data-tip="2026-05-31 · 无记录" ></span><span class="gh-day" data-level="0"  data-tip="2026-06-01 · 无记录" ></span><span class="gh-day" data-level="0"  data-tip="2026-06-02 · 无记录" ></span><span class="gh-day" data-level="0"  data-tip="2026-06-03 · 无记录" ></span><span class="gh-day" data-level="0"  data-tip="2026-06-04 · 无记录" ></span><span class="gh-day" data-level="0"  data-tip="2026-06-05 · 无记录" ></span><span class="gh-day" data-level="0"  data-tip="2026-06-06 · 无记录" ></span><span class="gh-day" data-level="0"  data-tip="2026-06-07 · 无记录" ></span><span class="gh-day" data-level="0"  data-tip="2026-06-08 · 无记录" ></span><span class="gh-day" data-level="0"  data-tip="2026-06-09 · 无记录" ></span><span class="gh-day" data-level="0"  data-tip="2026-06-10 · 无记录" ></span><span class="gh-day" data-level="0"  data-tip="2026-06-11 · 无记录" ></span><span class="gh-day" data-level="0"  data-tip="2026-06-12 · 无记录" ></span><span class="gh-day" data-level="0"  data-tip="2026-06-13 · 无记录" ></span><span class="gh-day" data-level="0"  data-tip="2026-06-14 · 无记录" ></span><span class="gh-day" data-level="0"  data-tip="2026-06-15 · 无记录" ></span><span class="gh-day" data-level="0"  data-tip="2026-06-16 · 无记录" ></span><span class="gh-day" data-level="0"  data-tip="2026-06-17 · 无记录" ></span><span class="gh-day" data-level="0"  data-tip="2026-06-18 · 无记录" ></span><span class="gh-day" data-level="0"  data-tip="2026-06-19 · 无记录" ></span><span class="gh-day" data-level="0"  data-tip="2026-06-20 · 无记录" ></span><span class="gh-day" data-level="0"  data-tip="2026-06-21 · 无记录" ></span><span class="gh-day" data-level="0"  data-tip="2026-06-22 · 无记录" ></span><span class="gh-day" data-level="0"  data-tip="2026-06-23 · 无记录" ></span><span class="gh-day" data-level="0"  data-tip="2026-06-24 · 无记录" ></span><span class="gh-day" data-level="0"  data-tip="2026-06-25 · 无记录" ></span><span class="gh-day" data-level="0"  data-tip="2026-06-26 · 无记录" ></span><span class="gh-day" data-level="0"  data-tip="2026-06-27 · 无记录" ></span><span class="gh-day" data-level="0"  data-tip="2026-06-28 · 无记录" ></span><span class="gh-day" data-level="0"  data-tip="2026-06-29 · 无记录" ></span><span class="gh-day" data-level="0"  data-tip="2026-06-30 · 无记录" ></span><span class="gh-day" data-level="0"  data-tip="2026-07-01 · 无记录" ></span><span class="gh-day" data-level="0"  data-tip="2026-07-02 · 无记录" ></span><span class="gh-day" data-level="0"  data-tip="2026-07-03 · 无记录" ></span><span class="gh-day" data-level="0"  data-tip="2026-07-04 · 无记录" ></span><span class="gh-day" data-level="0"  data-tip="2026-07-05 · 无记录" ></span><span class="gh-day" data-level="0"  data-tip="2026-07-06 · 无记录" ></span><span class="gh-day" data-level="0"  data-tip="2026-07-07 · 无记录" ></span><span class="gh-day" data-level="0"  data-tip="2026-07-08 · 无记录" ></span><span class="gh-day" data-level="0"  data-tip="2026-07-09 · 无记录" ></span><span class="gh-day" data-level="0"  data-tip="2026-07-10 · 无记录" ></span><span class="gh-day" data-level="0"  data-tip="2026-07-11 · 无记录" ></span><span class="gh-day" data-level="0"  data-tip="2026-07-12 · 无记录" ></span><span class="gh-day" data-level="0"  data-tip="2026-07-13 · 无记录" ></span><span class="gh-day" data-level="0"  data-tip="2026-07-14 · 无记录" ></span><span class="gh-day" data-level="0"  data-tip="2026-07-15 · 无记录" ></span><span class="gh-day" data-level="0"  data-tip="2026-07-16 · 无记录" ></span><span class="gh-day" data-level="0"  data-tip="2026-07-17 · 无记录" ></span><span class="gh-day" data-level="0"  data-tip="2026-07-18 · 无记录" ></span><span class="gh-day" data-level="0"  data-tip="2026-07-19 · 无记录" ></span><span class="gh-day" data-level="0"  data-tip="2026-07-20 · 无记录" ></span><span class="gh-day" data-level="0"  data-tip="2026-07-21 · 无记录" ></span><span class="gh-day" data-level="0"  data-tip="2026-07-22 · 无记录" ></span><span class="gh-day" data-level="0"  data-tip="2026-07-23 · 无记录" ></span><span class="gh-day" data-level="0"  data-tip="2026-07-24 · 无记录" ></span><span class="gh-day" data-level="0"  data-tip="2026-07-25 · 无记录" ></span><span class="gh-day" data-level="0"  data-tip="2026-07-26 · 无记录" ></span><span class="gh-day" data-level="0"  data-tip="2026-07-27 · 无记录" ></span><span class="gh-day" data-level="0"  data-tip="2026-07-28 · 无记录" ></span><span class="gh-day" data-level="0"  data-tip="2026-07-29 · 无记录" ></span><span class="gh-day" data-level="0"  data-tip="2026-07-30 · 无记录" ></span><span class="gh-day" data-level="0"  data-tip="2026-07-31 · 无记录" ></span><span class="gh-day" data-level="0"  data-tip="2026-08-01 · 无记录" ></span><span class="gh-day" data-level="0"  data-tip="2026-08-02 · 无记录" ></span><span class="gh-day" data-level="0"  data-tip="2026-08-03 · 无记录" ></span><span class="gh-day" data-level="0"  data-tip="2026-08-04 · 无记录" ></span><span class="gh-day" data-level="0"  data-tip="2026-08-05 · 无记录" ></span><span class="gh-day" data-level="0"  data-tip="2026-08-06 · 无记录" ></span><span class="gh-day" data-level="0"  data-tip="2026-08-07 · 无记录" ></span><span class="gh-day" data-level="0"  data-tip="2026-08-08 · 无记录" ></span><span class="gh-day" data-level="0"  data-tip="2026-08-09 · 无记录" ></span><span class="gh-day" data-level="0"  data-tip="2026-08-10 · 无记录" ></span><span class="gh-day" data-level="0"  data-tip="2026-08-11 · 无记录" ></span><span class="gh-day" data-level="0"  data-tip="2026-08-12 · 无记录" ></span><span class="gh-day" data-level="0"  data-tip="2026-08-13 · 无记录" ></span><span class="gh-day" data-level="0"  data-tip="2026-08-14 · 无记录" ></span><span class="gh-day" data-level="0"  data-tip="2026-08-15 · 无记录" ></span><span class="gh-day" data-level="0"  data-tip="2026-08-16 · 无记录" ></span><span class="gh-day" data-level="0"  data-tip="2026-08-17 · 无记录" ></span><span class="gh-day" data-level="0"  data-tip="2026-08-18 · 无记录" ></span><span class="gh-day" data-level="0"  data-tip="2026-08-19 · 无记录" ></span><span class="gh-day" data-level="0"  data-tip="2026-08-20 · 无记录" ></span><span class="gh-day" data-level="0"  data-tip="2026-08-21 · 无记录" ></span><span class="gh-day" data-level="0"  data-tip="2026-08-22 · 无记录" ></span><span class="gh-day" data-level="0"  data-tip="2026-08-23 · 无记录" ></span><span class="gh-day" data-level="0"  data-tip="2026-08-24 · 无记录" ></span><span class="gh-day" data-level="0"  data-tip="2026-08-25 · 无记录" ></span><span class="gh-day" data-level="0"  data-tip="2026-08-26 · 无记录" ></span><span class="gh-day" data-level="0"  data-tip="2026-08-27 · 无记录" ></span><span class="gh-day" data-level="0"  data-tip="2026-08-28 · 无记录" ></span><span class="gh-day" data-level="0"  data-tip="2026-08-29 · 无记录" ></span><span class="gh-day" data-level="0"  data-tip="2026-08-30 · 无记录" ></span><span class="gh-day" data-level="0"  data-tip="2026-08-31 · 无记录" ></span><span class="gh-day" data-level="0"  data-tip="2026-09-01 · 无记录" ></span><span class="gh-day" data-level="0"  data-tip="2026-09-02 · 无记录" ></span><span class="gh-day" data-level="0"  data-tip="2026-09-03 · 无记录" ></span><span class="gh-day" data-level="0"  data-tip="2026-09-04 · 无记录" ></span><span class="gh-day" data-level="0"  data-tip="2026-09-05 · 无记录" ></span><span class="gh-day" data-level="0"  data-tip="2026-09-06 · 无记录" ></span><span class="gh-day" data-level="0"  data-tip="2026-09-07 · 无记录" ></span><span class="gh-day" data-level="0"  data-tip="2026-09-08 · 无记录" ></span><span class="gh-day" data-level="0"  data-tip="2026-09-09 · 无记录" ></span><span class="gh-day" data-level="0"  data-tip="2026-09-10 · 无记录" ></span><span class="gh-day" data-level="0"  data-tip="2026-09-11 · 无记录" ></span><span class="gh-day" data-level="0"  data-tip="2026-09-12 · 无记录" ></span><span class="gh-day" data-level="0"  data-tip="2026-09-13 · 无记录" ></span><span class="gh-day" data-level="0"  data-tip="2026-09-14 · 无记录" ></span><span class="gh-day" data-level="0"  data-tip="2026-09-15 · 无记录" ></span><span class="gh-day" data-level="0"  data-tip="2026-09-16 · 无记录" ></span><span class="gh-day" data-level="0"  data-tip="2026-09-17 · 无记录" ></span><span class="gh-day" data-level="0"  data-tip="2026-09-18 · 无记录" ></span><span class="gh-day" data-level="0"  data-tip="2026-09-19 · 无记录" ></span><span class="gh-day" data-level="0"  data-tip="2026-09-20 · 无记录" ></span><span class="gh-day" data-level="0"  data-tip="2026-09-21 · 无记录" ></span><span class="gh-day" data-level="0"  data-tip="2026-09-22 · 无记录" ></span><span class="gh-day" data-level="0"  data-tip="2026-09-23 · 无记录" ></span><span class="gh-day" data-level="0"  data-tip="2026-09-24 · 无记录" ></span><span class="gh-day" data-level="0"  data-tip="2026-09-25 · 无记录" ></span><span class="gh-day" data-level="0"  data-tip="2026-09-26 · 无记录" ></span><span class="gh-day" data-level="0"  data-tip="2026-09-27 · 无记录" ></span><span class="gh-day" data-level="0"  data-tip="2026-09-28 · 无记录" ></span><span class="gh-day" data-level="0"  data-tip="2026-09-29 · 无记录" ></span><span class="gh-day" data-level="0"  data-tip="2026-09-30 · 无记录" ></span><span class="gh-day" data-level="0"  data-tip="2026-10-01 · 无记录" ></span><span class="gh-day" data-level="0"  data-tip="2026-10-02 · 无记录" ></span><span class="gh-day" data-level="0"  data-tip="2026-10-03 · 无记录" ></span><span class="gh-day" data-level="0"  data-tip="2026-10-04 · 无记录" ></span><span class="gh-day" data-level="0"  data-tip="2026-10-05 · 无记录" ></span><span class="gh-day" data-level="0"  data-tip="2026-10-06 · 无记录" ></span><span class="gh-day" data-level="0"  data-tip="2026-10-07 · 无记录" ></span><span class="gh-day" data-level="0"  data-tip="2026-10-08 · 无记录" ></span><span class="gh-day" data-level="0"  data-tip="2026-10-09 · 无记录" ></span><span class="gh-day" data-level="0"  data-tip="2026-10-10 · 无记录" ></span><span class="gh-day" data-level="0"  data-tip="2026-10-11 · 无记录" ></span><span class="gh-day" data-level="0"  data-tip="2026-10-12 · 无记录" ></span><span class="gh-day" data-level="0"  data-tip="2026-10-13 · 无记录" ></span><span class="gh-day" data-level="0"  data-tip="2026-10-14 · 无记录" ></span><span class="gh-day" data-level="0"  data-tip="2026-10-15 · 无记录" ></span><span class="gh-day" data-level="0"  data-tip="2026-10-16 · 无记录" ></span><span class="gh-day" data-level="0"  data-tip="2026-10-17 · 无记录" ></span><span class="gh-day" data-level="1"  data-tip="2026-10-18 · 日常：降温第一天，揣着热美式绕着河边走…" data-href="moments.html"></span><span class="gh-day" data-level="0"  data-tip="2026-10-19 · 无记录" ></span><span class="gh-day" data-level="0"  data-tip="2026-10-20 · 无记录" ></span><span class="gh-day" data-level="0"  data-tip="2026-10-21 · 无记录" ></span><span class="gh-day" data-level="0"  data-tip="2026-10-22 · 无记录" ></span><span class="gh-day" data-level="0"  data-tip="2026-10-23 · 无记录" ></span><span class="gh-day" data-level="0"  data-tip="2026-10-24 · 无记录" ></span><span class="gh-day" data-level="0"  data-tip="2026-10-25 · 无记录" ></span><span class="gh-day" data-level="2"  data-tip="2026-10-26 · 周末重看《完美的日子》：留一点不用倍速的时间" data-href="posts/2026-10-26-weekend-movie.html"></span><span class="gh-day" data-level="0"  data-tip="2026-10-27 · 无记录" ></span><span class="gh-day" data-level="0"  data-tip="2026-10-28 · 无记录" ></span><span class="gh-day" data-level="0"  data-tip="2026-10-29 · 无记录" ></span><span class="gh-day" data-level="0"  data-tip="2026-10-30 · 无记录" ></span><span class="gh-day" data-level="0"  data-tip="2026-10-31 · 无记录" ></span><span class="gh-day" data-level="0"  data-tip="2026-11-01 · 无记录" ></span><span class="gh-day" data-level="0"  data-tip="2026-11-02 · 无记录" ></span><span class="gh-day" data-level="0"  data-tip="2026-11-03 · 无记录" ></span><span class="gh-day" data-level="0"  data-tip="2026-11-04 · 无记录" ></span><span class="gh-day" data-level="0"  data-tip="2026-11-05 · 无记录" ></span><span class="gh-day" data-level="0"  data-tip="2026-11-06 · 无记录" ></span><span class="gh-day" data-level="0"  data-tip="2026-11-07 · 无记录" ></span><span class="gh-day" data-level="0"  data-tip="2026-11-08 · 无记录" ></span><span class="gh-day" data-level="0"  data-tip="2026-11-09 · 无记录" ></span><span class="gh-day" data-level="0"  data-tip="2026-11-10 · 无记录" ></span><span class="gh-day" data-level="0"  data-tip="2026-11-11 · 无记录" ></span><span class="gh-day" data-level="2"  data-tip="2026-11-12 · 把工具做减法：为什么这个博客没有用任何前端框架" data-href="posts/2026-11-12-zero-framework.html"></span><span class="gh-day" data-level="0"  data-tip="2026-11-13 · 无记录" ></span><span class="gh-day" data-level="0"  data-tip="2026-11-14 · 无记录" ></span><span class="gh-day" data-level="1"  data-tip="2026-11-15 · 日常：把桌面线材重新理了一遍，一下午什…" data-href="moments.html"></span><span class="gh-day" data-level="0"  data-tip="2026-11-16 · 无记录" ></span><span class="gh-day" data-level="0"  data-tip="2026-11-17 · 无记录" ></span><span class="gh-day" data-level="0"  data-tip="2026-11-18 · 无记录" ></span><span class="gh-day" data-level="3"  data-tip="2026-11-19 · 手搓一座零依赖个人站：把赛博领地握在自己手里" data-href="posts/2026-11-19-writing-guide.html"></span><span class="gh-day is-future"></span><span class="gh-day is-future"></span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="gh-contrib-foot font-mono-num">
+            <a href="moments.html" style="color:var(--ink-muted);">日常时间线 →</a>
+            <div class="gh-legend">
+              <span>Less</span>
+              <i class="gh-day" data-level="0"></i>
+              <i class="gh-day" data-level="1"></i>
+              <i class="gh-day" data-level="2"></i>
+              <i class="gh-day" data-level="3"></i>
+              <i class="gh-day" data-level="4"></i>
+              <span>More</span>
+            </div>
+          </div>
+        </section>
+
+        <!-- 4. GitHub-Style Contribution Activity Stream -->
+        <section>
+          <div class="gh-sec-header">
+            <span class="gh-sec-title">Recent Activity</span>
+          </div>
+          <div class="gh-activity-stream">
+            
+              <a href="moments.html" class="gh-act-item" >
+                <span class="gh-act-node"><svg class="ico" viewBox="0 0 24 24" style="width:13px;height:13px;"><path d="M12 3v3m0 12v3M3 12h3m12 0h3m-2.6-6.4-2.1 2.1M8.7 15.3l-2.1 2.1m0-10.8 2.1 2.1m6.6 6.6 2.1 2.1"/></svg></span>
+                <div class="gh-act-main">
+                  <span class="gh-act-badge">随手拍</span>
+                  <span class="gh-act-title">出门买咖啡顺手拍了三张，十一月傍晚的光线总是收得特别快。</span>
+                </div>
+                <time class="gh-act-date font-mono-num">11.19</time>
+              </a>
+              <a href="posts/2026-11-19-writing-guide.html" class="gh-act-item" >
+                <span class="gh-act-node"><svg class="ico" viewBox="0 0 24 24" style="width:14px;height:14px;"><path d="M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H20v20H6.5a2.5 2.5 0 0 1 0-5H20"/></svg></span>
+                <div class="gh-act-main">
+                  <span class="gh-act-badge">造物</span>
+                  <span class="gh-act-title">手搓一座零依赖个人站：把赛博领地握在自己手里</span>
+                </div>
+                <time class="gh-act-date font-mono-num">11.19</time>
+              </a>
+              <a href="moments.html" class="gh-act-item" >
+                <span class="gh-act-node"><svg class="ico" viewBox="0 0 24 24" style="width:13px;height:13px;"><path d="M12 3v3m0 12v3M3 12h3m12 0h3m-2.6-6.4-2.1 2.1M8.7 15.3l-2.1 2.1m0-10.8 2.1 2.1m6.6 6.6 2.1 2.1"/></svg></span>
+                <div class="gh-act-main">
+                  <span class="gh-act-badge">周末</span>
+                  <span class="gh-act-title">把桌面线材重新理了一遍，一下午什么正事没干，但极度舒适。</span>
+                </div>
+                <time class="gh-act-date font-mono-num">11.15</time>
+              </a>
+              <a href="posts/2026-11-12-zero-framework.html" class="gh-act-item" >
+                <span class="gh-act-node"><svg class="ico" viewBox="0 0 24 24" style="width:14px;height:14px;"><path d="M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H20v20H6.5a2.5 2.5 0 0 1 0-5H20"/></svg></span>
+                <div class="gh-act-main">
+                  <span class="gh-act-badge">造物</span>
+                  <span class="gh-act-title">把工具做减法：为什么这个博客没有用任何前端框架</span>
+                </div>
+                <time class="gh-act-date font-mono-num">11.12</time>
+              </a>
+              <a href="posts/2026-10-26-weekend-movie.html" class="gh-act-item" >
+                <span class="gh-act-node"><svg class="ico" viewBox="0 0 24 24" style="width:14px;height:14px;"><path d="M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H20v20H6.5a2.5 2.5 0 0 1 0-5H20"/></svg></span>
+                <div class="gh-act-main">
+                  <span class="gh-act-badge">随笔</span>
+                  <span class="gh-act-title">周末重看《完美的日子》：留一点不用倍速的时间</span>
+                </div>
+                <time class="gh-act-date font-mono-num">10.26</time>
+              </a>
+          </div>
+        </section>
+      </div>
+    </div>
+  </main>
+  </div>
+
+  <div id="global-toast" class="global-toast"></div>
+  <div id="floating-tip" class="floating-tip font-mono-num"></div>
+  <input type="file" id="global-img-picker" accept="image/*" multiple style="display:none;" />
+  <script id="spa-page-meta" type="application/json">{"activeNav":"about","readingTitle":"","searchData":[{"kind":"文章","title":"手搓一座零依赖个人站：把赛博领地握在自己手里","date":"2026-11-19","category":"造物","tags":["独立站点","极简架构"],"summary":"甩掉几百兆的 node_modules，只留纯文本、本地文件夹和自己写得懂的几百行代码。","private":false,"url":"posts/2026-11-19-writing-guide.html"},{"kind":"文章","title":"把工具做减法：为什么这个博客没有用任何前端框架","date":"2026-11-12","category":"造物","tags":["极简","架构"],"summary":"很多时候想写博客，结果光折腾框架、装几百兆依赖包、调主题报错就把热情消耗光了。 这次干脆换了个思路：只保留 Astro 最让人舒服的设计理念——内容存成干净的纯文本、最终输出零冗余的纯静态网页、交互只在必要的地方轻量挂载，但底层完…","private":false,"url":"posts/2026-11-12-zero-framework.html"},{"kind":"文章","title":"周末重看《完美的日子》：留一点不用倍速的时间","date":"2026-10-26","category":"随笔","tags":["电影","周末"],"summary":"周六晚上关掉手机通知，把文德斯那部片子又放了一遍。没有激烈冲突，只有清晨扫落叶的沙沙声、车载磁带里的老摇滚，还有午休抬头拍下的树影。 现在看什么都习惯按二倍速，反而这种慢得近乎固执的日常节奏最让人安心。看完顺手泡了杯热茶，觉得这个…","private":false,"url":"posts/2026-10-26-weekend-movie.html"},{"kind":"文章","title":"年底清理旧备忘录的一点感想","date":"2025-12-20","category":"随笔","tags":["随想","年末"],"summary":"趁着年底把手机和电脑里攒了一整年的零碎备忘录翻了一遍。很多当时觉得天大的烦心事，隔了大半年再看，其实也就两行字的事。 删掉了大半过期的待办，只留下几段当时随手记下的对话和旅途片段。有些东西还是落成干净的纯文本存起来最踏实。","private":false,"url":"posts/2025-12-20-year-end-note.html"},{"kind":"日常","title":"出门买咖啡顺手拍了三张，十一月傍晚的光线总是收得特别快。","date":"2026-11-19","category":"随手拍","tags":["天台 · 晚风"],"summary":"出门买咖啡顺手拍了三张，十一月傍晚的光线总是收得特别快。","private":false,"url":"moments.html"},{"kind":"日常","title":"把桌面线材重新理了一遍，一下午什么正事没干，但极度舒适。","date":"2026-11-15","category":"周末","tags":["家里 · 冰美式"],"summary":"把桌面线材重新理了一遍，一下午什么正事没干，但极度舒适。","private":false,"url":"moments.html"},{"kind":"日常","title":"降温第一天，揣着热美式绕着河边走了两公里，梧桐叶已经开始落了。","date":"2026-10-18","category":"日常","tags":["街角公园"],"summary":"降温第一天，揣着热美式绕着河边走了两公里，梧桐叶已经开始落了。","private":false,"url":"moments.html"},{"kind":"收藏","title":"完美的日子 Perfect Days","date":"看过","category":"影视","tags":["维姆·文德斯 · 2023"],"summary":"每天清晨扫落叶、午休抬头拍树影、睡前看几页口袋书。平淡日常里最有安全感的节奏。","private":false,"url":"shelf.html"},{"kind":"收藏","title":"置身事内","date":"在读","category":"书籍","tags":["兰小欢"],"summary":"不掉书袋，把复杂的事情用大白话讲得透彻明白，翻开就停不下来。","private":false,"url":"shelf.html"},{"kind":"收藏","title":"星露谷物语 Stardew Valley","date":"玩过","category":"游戏","tags":["ConcernedApe"],"summary":"不知道干嘛的时候打开种两季地、钓钓鱼，永远百玩不腻。","private":false,"url":"shelf.html"},{"kind":"收藏","title":"纯文本本地笔记工作流","date":"常用","category":"好物","tags":["Markdown + 本地文件夹"],"summary":"不用担心软件倒闭或会员涨价，自己的文字和照片全在自己硬盘里最踏实。","private":false,"url":"shelf.html"}],"moments":[{"id":"m-1","date":"2026-11-19 18:20","mood":"随手拍","location":"天台 · 晚风","private":false,"content":"出门买咖啡顺手拍了三张，十一月傍晚的光线总是收得特别快。","images":["uploads/evening-dusk.svg","uploads/window-sunlight.svg","uploads/desk-notebook.svg"],"notes":["耳机里刚好放到坂本龙一。"],"likes":12},{"id":"m-3","date":"2026-11-15 15:10","mood":"周末","location":"家里 · 冰美式","private":false,"content":"把桌面线材重新理了一遍，一下午什么正事没干，但极度舒适。","images":["uploads/desk-notebook.svg"],"notes":[],"likes":9},{"id":"m-4","date":"2026-10-18 17:40","mood":"日常","location":"街角公园","private":false,"content":"降温第一天，揣着热美式绕着河边走了两公里，梧桐叶已经开始落了。","images":["uploads/window-sunlight.svg"],"notes":[],"likes":7}],"siteMeta":{"title":"自留地","author":"Nianyou","handle":"nianyou","avatar":"uploads/1795158194215-头像.png","location":"江苏 · 徐州"}}</script>
+
+  <footer class="container-main site-footer">
+    <div style="display:flex; align-items:center; gap:14px; flex-wrap:wrap;">
+      <span>© 2026 自留地</span>
+      <span style="opacity:0.4;">·</span>
+      <span id="live-uptime" class="font-mono-num" data-start="2026-10-01">存活 50 天</span>
+      <span class="year-prog-wrap" title="2026 年进度 88.7%">
+        <span class="font-mono-num">2026 · 88.7%</span>
+        <span class="year-prog-track"><span class="year-prog-fill" style="width:88.7%;"></span></span>
+      </span>
+      <span id="live-fps" class="fps-badge font-mono-num">60 FPS</span>
+    </div>
+    <div style="display:flex; gap:16px; align-items:center; flex-wrap:wrap;">
+      
+      <button type="button" id="footer-meteor" style="background:none;border:none;padding:0;color:var(--ink-secondary);font-size:12.5px;cursor:pointer;" title="召唤流星雨 (S)">☄ 流星</button>
+      <button type="button" id="footer-fireworks" style="background:none;border:none;padding:0;color:var(--ink-secondary);font-size:12.5px;cursor:pointer;" title="放烟花 (F)">✦ 烟花</button>
+      <a href="rss.xml" class="font-mono-num">RSS</a>
+    </div>
+  </footer>
+
+  <div id="utility-dock" class="floating-utility-dock">
+    <button type="button" id="dock-vinyl-btn" class="dock-orb-btn dock-vinyl-orb" data-magnetic title="黑胶电台 · 点击播放/暂停">
+      <svg class="ico" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="3"/><path d="M6 12a6 6 0 0 1 6-6"/></svg>
+    </button>
+    <button type="button" class="dock-orb-btn" data-magnetic data-random-walk title="随机漫游">
+      <svg class="ico" viewBox="0 0 24 24" style="width:14px;height:14px;"><circle cx="12" cy="12" r="10"/><polygon points="16.24 7.76 14.12 14.12 7.76 16.24 9.88 9.88 16.24 7.76"/></svg>
+    </button>
+    <button type="button" id="back-to-top" class="dock-orb-btn" data-magnetic title="回到顶部">
+      <svg class="progress-ring-svg" viewBox="0 0 42 42">
+        <circle id="progress-ring-circle" class="progress-ring-circle" cx="21" cy="21" r="19"></circle>
+      </svg>
+      <svg class="ico" viewBox="0 0 24 24" style="width:15px;height:15px;"><path d="m18 15-6-6-6 6"/></svg>
+    </button>
+  </div>
+
+  <!-- Live Chromatic Aura Popover (Body-Level to Avoid Nav Clipping) -->
+  <div id="aura-popover" class="aura-popover">
+    <button type="button" class="aura-opt" data-aura-pick="prism"><i style="background:linear-gradient(135deg,#FF6B4A,#8B5CF6,#10B981);"></i><span>流彩</span></button>
+    <button type="button" class="aura-opt" data-aura-pick="cyber"><i style="background:linear-gradient(135deg,#06B6D4,#EC4899,#8B5CF6);"></i><span>霓虹</span></button>
+    <button type="button" class="aura-opt" data-aura-pick="aurora"><i style="background:linear-gradient(135deg,#10B981,#0EA5E9,#F59E0B);"></i><span>极光</span></button>
+    <button type="button" class="aura-opt" data-aura-pick="nebula"><i style="background:linear-gradient(135deg,#8B5CF6,#4F46E5,#F43F5E);"></i><span>星云</span></button>
+    <button type="button" class="aura-opt" data-aura-pick="sunset"><i style="background:linear-gradient(135deg,#F97316,#EC4899,#EAB308);"></i><span>霞光</span></button>
+  </div>
+
+  <!-- Bespoke Categorized Frosted-Glass Right-Click Context Menu -->
+  <div id="custom-ctx-menu" class="ctx-menu">
+    <div class="ctx-group-label">漫游与常用</div>
+    <button type="button" class="ctx-item" data-ctx-act="random"><span>随机漫游一篇</span><span class="ctx-key">R</span></button>
+    <button type="button" class="ctx-item" data-ctx-act="search"><span>搜索与快捷指令</span><span class="ctx-key">⌘K</span></button>
+    <button type="button" class="ctx-item" data-ctx-act="copy-url"><span>复制本页链接</span><span class="ctx-key">⌘C</span></button>
+
+    <div class="ctx-sep"></div>
+    <div class="ctx-group-label">光影与视效</div>
+    <button type="button" class="ctx-item" data-ctx-act="theme"><span>切换日夜光影</span><span class="ctx-key">D</span></button>
+    <button type="button" class="ctx-item" data-ctx-act="aura"><span>切换全站幻彩光谱</span><span class="ctx-key">C</span></button>
+    <button type="button" class="ctx-item" data-ctx-act="matrix"><span>切换星尘 / 代码雨</span><span class="ctx-key">M</span></button>
+    <button type="button" class="ctx-item" data-ctx-act="meteor"><span>召唤漫天流星雨</span><span class="ctx-key">S</span></button>
+    <button type="button" class="ctx-item" data-ctx-act="fireworks"><span>绽放屏幕烟花秀</span><span class="ctx-key">F</span></button>
+
+    <div class="ctx-sep"></div>
+    <div class="ctx-group-label">声音与分项音效</div>
+    <div class="ctx-vol-row">
+      <span>全站总音量</span>
+      <input id="ctx-master-vol" type="range" min="0" max="100" value="85" class="ctx-vol-slider" />
+      <span id="ctx-vol-pct" class="font-mono-num ctx-vol-num">85%</span>
+    </div>
+    <button type="button" class="ctx-item" data-sfx-sub="gravity"><span>引力漩涡音效</span><span class="ctx-switch" id="ctx-sw-gravity">已开</span></button>
+    <button type="button" class="ctx-item" data-sfx-sub="mech"><span>机械轴按键音</span><span class="ctx-switch" id="ctx-sw-mech">已开</span></button>
+    <button type="button" class="ctx-item" data-sfx-sub="chime"><span>琴键与街机音</span><span class="ctx-switch" id="ctx-sw-chime">已开</span></button>
+
+    <div class="ctx-sep"></div>
+    <div class="ctx-group-label">电台与极客</div>
+    <button type="button" class="ctx-item" data-ctx-act="vinyl"><span id="ctx-vinyl-label">播放黑胶电台</span><span class="ctx-key">P</span></button>
+    <button type="button" class="ctx-item" data-ctx-act="next-track"><span>切换下一首电台</span><span class="ctx-key">N</span></button>
+    <button type="button" class="ctx-item" data-ctx-act="terminal"><span>打开极客终端</span><span class="ctx-key">~</span></button>
+    <button type="button" class="ctx-item" data-ctx-act="snake"><span>终端霓虹贪吃蛇</span><span class="ctx-key">Snake</span></button>
+  </div>
+
+  <!-- Cyberpunk / macOS Geek Terminal HUD -->
+  <div id="geek-terminal" class="modal-backdrop">
+    <div class="term-window">
+      <div class="term-titlebar">
+        <div class="term-dots">
+          <button type="button" id="term-close-dot" class="tdot red" title="关闭"></button>
+          <span class="tdot yellow"></span>
+          <span class="tdot green"></span>
+        </div>
+        <span class="font-mono-num" style="font-size:12px; color:#9A948C;">guest@ziliudi: ~ (zsh)</span>
+        <span class="font-mono-num" style="font-size:11px; color:#6D6760;">ESC</span>
+      </div>
+      <div id="term-output" class="term-output font-mono-num"></div>
+      <div class="term-quick-chips">
+        <button type="button" data-term-cmd="neofetch">neofetch</button>
+        <button type="button" data-term-cmd="snake">snake</button>
+        <button type="button" data-term-cmd="meteor">meteor</button>
+        <button type="button" data-term-cmd="fireworks">fireworks</button>
+        <button type="button" data-term-cmd="aura">aura</button>
+        <button type="button" data-term-cmd="matrix">matrix</button>
+        <button type="button" data-term-cmd="play">play</button>
+        <button type="button" data-term-cmd="ls">ls</button>
+        <button type="button" data-term-cmd="random">random</button>
+        <button type="button" data-term-cmd="theme">theme</button>
+        <button type="button" data-term-cmd="clear">clear</button>
+      </div>
+      <div class="term-prompt-row font-mono-num">
+        <span class="term-prompt-arrow">➜ ~</span>
+        <input id="term-input" type="text" spellcheck="false" autocomplete="off" placeholder="help" />
+      </div>
+    </div>
+  </div>
+
+  <div id="lightbox" class="lightbox-backdrop">
+    <button type="button" id="lb-prev" class="lb-nav-btn lb-prev" title="上一张"><svg class="ico" viewBox="0 0 24 24" style="width:15px;height:15px;"><path d="m15 18-6-6 6-6"/></svg></button>
+    <img id="lb-img" class="lightbox-img" src="" alt="" />
+    <button type="button" id="lb-next" class="lb-nav-btn lb-next" title="下一张"><svg class="ico" viewBox="0 0 24 24" style="width:15px;height:15px;"><path d="m9 18 6-6-6-6"/></svg></button>
+    <div id="lb-caption" class="lb-caption"></div>
+  </div>
+
+  <!-- Prose Text Selection Floating Action Pill & High-DPI Quote Poster Studio -->
+  <div id="prose-quote-bar" class="prose-quote-bar">
+    <button type="button" id="pq-copy-btn">复制摘录</button>
+    <span class="pq-div"></span>
+    <button type="button" id="pq-poster-btn">✦ 生成金句卡</button>
+  </div>
+
+  <div id="quote-poster-modal" class="modal-backdrop">
+    <div class="modal-box poster-modal-box">
+      <div class="poster-modal-head">
+        <strong class="font-serif-cn" style="font-size:16px;">流光金句海报</strong>
+        <button type="button" id="poster-close-btn" class="ui-clear-btn visible" title="关闭">×</button>
+      </div>
+      <div class="poster-canvas-wrap">
+        <canvas id="poster-canvas" width="880" height="1100"></canvas>
+      </div>
+      <div class="poster-controls-bar">
+        <div class="poster-theme-dots" id="poster-themes">
+          <button type="button" class="pt-dot active" data-poster-theme="dawn" style="background:linear-gradient(135deg,#FFF7ED,#FCE7F3,#E0E7FF);" title="流彩黎明"></button>
+          <button type="button" class="pt-dot" data-poster-theme="cyber" style="background:linear-gradient(135deg,#0F172A,#311042,#083344);" title="暗夜霓虹"></button>
+          <button type="button" class="pt-dot" data-poster-theme="aurora" style="background:linear-gradient(135deg,#ECFDF5,#E0F2FE,#FEF3C7);" title="极光薄荷"></button>
+          <button type="button" class="pt-dot" data-poster-theme="nebula" style="background:linear-gradient(135deg,#1E1B4B,#4C1D95,#831843);" title="深空暮紫"></button>
+        </div>
+        <div style="display:flex; gap:8px;">
+          <button type="button" id="poster-copy-img" class="btn-secondary">复制图片</button>
+          <button type="button" id="poster-download-btn" class="btn-primary">下载 PNG</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Full-Site Spotlight Search & Command Palette Modal -->
+  <div id="search-modal" class="modal-backdrop">
+    <div class="modal-box" style="background:var(--card-tinted);">
+      <div class="ui-input-wrap" style="height:44px; padding:0 14px; margin-bottom:10px; border-radius:12px;">
+        <span class="ui-input-icon"><svg class="ico" viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg></span>
+        <input id="search-input" type="text" placeholder="搜索文章日常，或输入 > 执行快捷指令…" />
+        <button type="button" id="search-clear-btn" class="ui-clear-btn" title="清空">×</button>
+        <span class="ui-kbd">ESC</span>
+      </div>
+      <div id="search-results" style="max-height:340px; overflow-y:auto; display:grid; gap:4px;"></div>
+    </div>
+  </div>
+
+  <script>
+    window.__SEARCH_INDEX__ = [{"kind":"文章","title":"手搓一座零依赖个人站：把赛博领地握在自己手里","date":"2026-11-19","category":"造物","tags":["独立站点","极简架构"],"summary":"甩掉几百兆的 node_modules，只留纯文本、本地文件夹和自己写得懂的几百行代码。","private":false,"url":"posts/2026-11-19-writing-guide.html"},{"kind":"文章","title":"把工具做减法：为什么这个博客没有用任何前端框架","date":"2026-11-12","category":"造物","tags":["极简","架构"],"summary":"很多时候想写博客，结果光折腾框架、装几百兆依赖包、调主题报错就把热情消耗光了。 这次干脆换了个思路：只保留 Astro 最让人舒服的设计理念——内容存成干净的纯文本、最终输出零冗余的纯静态网页、交互只在必要的地方轻量挂载，但底层完…","private":false,"url":"posts/2026-11-12-zero-framework.html"},{"kind":"文章","title":"周末重看《完美的日子》：留一点不用倍速的时间","date":"2026-10-26","category":"随笔","tags":["电影","周末"],"summary":"周六晚上关掉手机通知，把文德斯那部片子又放了一遍。没有激烈冲突，只有清晨扫落叶的沙沙声、车载磁带里的老摇滚，还有午休抬头拍下的树影。 现在看什么都习惯按二倍速，反而这种慢得近乎固执的日常节奏最让人安心。看完顺手泡了杯热茶，觉得这个…","private":false,"url":"posts/2026-10-26-weekend-movie.html"},{"kind":"文章","title":"年底清理旧备忘录的一点感想","date":"2025-12-20","category":"随笔","tags":["随想","年末"],"summary":"趁着年底把手机和电脑里攒了一整年的零碎备忘录翻了一遍。很多当时觉得天大的烦心事，隔了大半年再看，其实也就两行字的事。 删掉了大半过期的待办，只留下几段当时随手记下的对话和旅途片段。有些东西还是落成干净的纯文本存起来最踏实。","private":false,"url":"posts/2025-12-20-year-end-note.html"},{"kind":"日常","title":"出门买咖啡顺手拍了三张，十一月傍晚的光线总是收得特别快。","date":"2026-11-19","category":"随手拍","tags":["天台 · 晚风"],"summary":"出门买咖啡顺手拍了三张，十一月傍晚的光线总是收得特别快。","private":false,"url":"moments.html"},{"kind":"日常","title":"把桌面线材重新理了一遍，一下午什么正事没干，但极度舒适。","date":"2026-11-15","category":"周末","tags":["家里 · 冰美式"],"summary":"把桌面线材重新理了一遍，一下午什么正事没干，但极度舒适。","private":false,"url":"moments.html"},{"kind":"日常","title":"降温第一天，揣着热美式绕着河边走了两公里，梧桐叶已经开始落了。","date":"2026-10-18","category":"日常","tags":["街角公园"],"summary":"降温第一天，揣着热美式绕着河边走了两公里，梧桐叶已经开始落了。","private":false,"url":"moments.html"},{"kind":"收藏","title":"完美的日子 Perfect Days","date":"看过","category":"影视","tags":["维姆·文德斯 · 2023"],"summary":"每天清晨扫落叶、午休抬头拍树影、睡前看几页口袋书。平淡日常里最有安全感的节奏。","private":false,"url":"shelf.html"},{"kind":"收藏","title":"置身事内","date":"在读","category":"书籍","tags":["兰小欢"],"summary":"不掉书袋，把复杂的事情用大白话讲得透彻明白，翻开就停不下来。","private":false,"url":"shelf.html"},{"kind":"收藏","title":"星露谷物语 Stardew Valley","date":"玩过","category":"游戏","tags":["ConcernedApe"],"summary":"不知道干嘛的时候打开种两季地、钓钓鱼，永远百玩不腻。","private":false,"url":"shelf.html"},{"kind":"收藏","title":"纯文本本地笔记工作流","date":"常用","category":"好物","tags":["Markdown + 本地文件夹"],"summary":"不用担心软件倒闭或会员涨价，自己的文字和照片全在自己硬盘里最踏实。","private":false,"url":"shelf.html"}];
+    window.__TYPEWRITER__ = ["深夜写码，白天补觉","正在折腾好玩的小东西","按 ` 键或右键解锁彩蛋"];
+    window.__MOMENTS__ = [{"id":"m-1","date":"2026-11-19 18:20","mood":"随手拍","location":"天台 · 晚风","private":false,"content":"出门买咖啡顺手拍了三张，十一月傍晚的光线总是收得特别快。","images":["uploads/evening-dusk.svg","uploads/window-sunlight.svg","uploads/desk-notebook.svg"],"notes":["耳机里刚好放到坂本龙一。"],"likes":12},{"id":"m-3","date":"2026-11-15 15:10","mood":"周末","location":"家里 · 冰美式","private":false,"content":"把桌面线材重新理了一遍，一下午什么正事没干，但极度舒适。","images":["uploads/desk-notebook.svg"],"notes":[],"likes":9},{"id":"m-4","date":"2026-10-18 17:40","mood":"日常","location":"街角公园","private":false,"content":"降温第一天，揣着热美式绕着河边走了两公里，梧桐叶已经开始落了。","images":["uploads/window-sunlight.svg"],"notes":[],"likes":7}];
+    window.__SITE_META__ = {"title":"自留地","author":"Nianyou","handle":"nianyou","avatar":"uploads/1795158194215-头像.png","location":"江苏 · 徐州"};
+    window.__LOCAL_DEV__ = false;
+  </script>
+  <script src="assets/client.js"></script>
+  
+</body>
+</html>

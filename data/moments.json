@@ -1,0 +1,56 @@
+[
+  {
+    "id": "m-1",
+    "date": "2026-11-19 18:20",
+    "mood": "随手拍",
+    "location": "天台 · 晚风",
+    "private": false,
+    "content": "出门买咖啡顺手拍了三张，十一月傍晚的光线总是收得特别快。",
+    "images": [
+      "uploads/evening-dusk.svg",
+      "uploads/window-sunlight.svg",
+      "uploads/desk-notebook.svg"
+    ],
+    "notes": [
+      "耳机里刚好放到坂本龙一。"
+    ],
+    "likes": 12
+  },
+  {
+    "id": "m-2",
+    "date": "2026-11-18 23:40",
+    "mood": "碎碎念",
+    "location": "深夜书桌",
+    "private": true,
+    "content": "关掉所有群聊通知之后，注意力终于回到了自己身上。有些话没必要发给所有人看，留在这儿刚刚好。",
+    "images": [],
+    "notes": [],
+    "likes": 3
+  },
+  {
+    "id": "m-3",
+    "date": "2026-11-15 15:10",
+    "mood": "周末",
+    "location": "家里 · 冰美式",
+    "private": false,
+    "content": "把桌面线材重新理了一遍，一下午什么正事没干，但极度舒适。",
+    "images": [
+      "uploads/desk-notebook.svg"
+    ],
+    "notes": [],
+    "likes": 9
+  },
+  {
+    "id": "m-4",
+    "date": "2026-10-18 17:40",
+    "mood": "日常",
+    "location": "街角公园",
+    "private": false,
+    "content": "降温第一天，揣着热美式绕着河边走了两公里，梧桐叶已经开始落了。",
+    "images": [
+      "uploads/window-sunlight.svg"
+    ],
+    "notes": [],
+    "likes": 7
+  }
+]

@@ -1,0 +1,45 @@
+{
+  "title": "自留地",
+  "author": "Nianyou",
+  "handle": "nianyou",
+  "avatar": "uploads/1795158194215-头像.png",
+  "statusText": "深夜写码，白天补觉",
+  "location": "江苏 · 徐州",
+  "navLabels": {
+    "home": "扉页",
+    "moments": "朝夕",
+    "archive": "纪事",
+    "shelf": "珍藏",
+    "about": "自叙"
+  },
+  "startDate": "2026-10-01",
+  "typewriterPhrases": [
+    "深夜写码，白天补觉",
+    "正在折腾好玩的小东西",
+    "按 ` 键或右键解锁彩蛋"
+  ],
+  "heroHeadline": "欢迎闯入",
+  "heroHeadlineAccent": "我的自留地",
+  "heroIntro": "写代码，看闲书，存几张日常切片。",
+  "polaroids": [
+    {
+      "src": "uploads/window-sunlight.svg",
+      "caption": "16:00 · 窗台"
+    },
+    {
+      "src": "uploads/desk-notebook.svg",
+      "caption": "桌面与黑咖啡"
+    },
+    {
+      "src": "uploads/evening-dusk.svg",
+      "caption": "18:10 · 晚风"
+    }
+  ],
+  "archiveBio": "",
+  "aboutContent": "留一块不受算法打扰的地方，放自己的长文、随手拍和私藏清单。\n\n平时偏爱结构克制、没有多余依赖的工具。有意思的想法就写成文章，懒得展开就丢进日常流里。\n\n### 常折腾的方向\n\n- 零依赖原生架构与本地优先工具\n- Web Audio / Canvas 交互实验\n- 随手记下的书影与日常切片",
+  "categories": [
+    "造物",
+    "随笔",
+    "夜记"
+  ]
+}

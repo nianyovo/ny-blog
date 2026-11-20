@@ -1,0 +1,10 @@
+{
+  "name": "nianyou-blog",
+  "version": "1.0.0",
+  "private": true,
+  "description": "零第三方依赖 · 本地优先个人博客与 Typora 式写作台",
+  "scripts": {
+    "dev": "node blog.js dev",
+    "build": "node blog.js build"
+  }
+}

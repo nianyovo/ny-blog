@@ -1,0 +1,332 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-theme="light" data-aura="prism">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>手搓一座零依赖个人站：把赛博领地握在自己手里 · 自留地</title>
+  <script>
+    (function() {
+      var saved = localStorage.getItem('blog-theme');
+      if (saved === 'dark' || saved === 'light') {
+        document.documentElement.setAttribute('data-theme', saved);
+      }
+      var aura = localStorage.getItem('blog-aura');
+      if (aura) {
+        document.documentElement.setAttribute('data-aura', aura);
+      }
+      if (false && sessionStorage.getItem('guest-preview') === '1') {
+        document.documentElement.classList.add('guest-preview');
+      }
+    })();
+  </script>
+  <link rel="stylesheet" href="../assets/styles.css" />
+  
+  <link rel="alternate" type="application/rss+xml" title="自留地" href="../rss.xml" />
+</head>
+<body>
+  <div id="scroll-progress"></div>
+  <div id="cursor-ring" class="cursor-ring"></div>
+  <div class="film-grain" aria-hidden="true"></div>
+  <canvas id="fx-canvas" class="fx-canvas"></canvas>
+
+  <div class="ambient-canvas">
+    <div class="aurora-blob b1"></div>
+    <div class="aurora-blob b2"></div>
+    <div class="aurora-blob b3"></div>
+    <div class="aurora-blob b4"></div>
+    <div class="aurora-blob b5"></div>
+  </div>
+
+  <div class="nav-wrapper">
+    <header id="floating-nav" class="floating-nav" data-has-reading="1">
+      <a href="../index.html" class="brand">
+        <img class="brand-avatar" data-live-avatar src="../uploads/1795158194215-头像.png" alt="Nianyou" />
+        <span class="brand-title font-serif-cn">自留地</span>
+      </a>
+
+      <div class="nav-center-stage">
+        <nav id="nav-pills-wrap" class="nav-center-pills">
+          <span id="nav-glider" class="nav-glider"></span>
+          <a href="../index.html" data-nav-key="home" class="">扉页</a>
+          <a href="../moments.html" data-nav-key="moments" class="">朝夕</a>
+          <a href="../archive.html" data-nav-key="archive" class="">纪事</a>
+          <a href="../shelf.html" data-nav-key="shelf" class="">珍藏</a>
+          <a href="../about.html" data-nav-key="about" class="">自叙</a>
+        </nav>
+        <div id="nav-reading-title" class="nav-reading-title font-serif-cn" title="点击回到文章顶部">手搓一座零依赖个人站：把赛博领地握在自己手里</div>
+      </div>
+
+      <div class="nav-actions">
+        
+        <button type="button" id="aura-open-btn" class="pill-action-btn aura-pill-btn" title="切换幻彩光谱 (C)">
+          <span class="aura-rainbow-dot"></span>
+        </button>
+        <button type="button" id="sfx-toggle-btn" class="pill-action-btn sfx-pill-btn" title="全站总声音开关 (V)">
+          <span id="sfx-ico-on"><svg class="ico" viewBox="0 0 24 24"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M15.54 8.46a5 5 0 0 1 0 7.07"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14"/></svg></span>
+          <span id="sfx-ico-off" style="display:none;"><svg class="ico" viewBox="0 0 24 24"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><line x1="22" x2="16" y1="9" y2="15"/><line x1="16" x2="22" y1="9" y2="15"/></svg></span>
+        </button>
+        <button type="button" id="terminal-open" class="pill-action-btn" title="极客终端 (~)">
+          <svg class="ico" viewBox="0 0 24 24"><polyline points="4 17 10 11 4 5"/><line x1="12" x2="20" y1="19" y2="19"/></svg>
+        </button>
+        <button type="button" id="search-open" class="pill-action-btn" title="搜索 (Ctrl+K)">
+          <svg class="ico" viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
+        </button>
+        <button type="button" id="theme-toggle" class="pill-action-btn" title="切换日夜">
+          <span id="theme-icon-sun"><svg class="ico" viewBox="0 0 24 24"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"/></svg></span>
+          <span id="theme-icon-moon" style="display:none;"><svg class="ico" viewBox="0 0 24 24"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg></span>
+        </button>
+        
+      </div>
+    </header>
+
+    
+  </div>
+
+  <div id="app-view">
+    
+  <div class="article-stage" data-post-slug="2026-11-19-writing-guide" >
+    <article id="article-paper" class="article-paper">
+      <div class="article-top-actions">
+        <a href="../archive.html" class="back-btn-inline"><svg class="ico" viewBox="0 0 24 24" style="width:15px;height:15px;"><path d="m15 18-6-6 6-6"/></svg><span>返回文章列表</span></a>
+        <div style="display:flex; align-items:center; gap:8px;">
+          <button type="button" id="article-poster-btn" class="pill-action-btn" style="height:28px; padding:0 10px; font-size:11.5px;" data-post-summary="甩掉几百兆的 node_modules，只留纯文本、本地文件夹和自己写得懂的几百行代码。" data-post-date="2026.11.19" title="生成分享金句海报"><svg class="ico" viewBox="0 0 24 24" style="width:13.5px;height:13.5px;"><rect x="4" y="3" width="16" height="18" rx="2.5"/><path d="M8 8h8M8 12h6M8 17h4"/></svg><span>金句卡</span></button>
+          <button type="button" id="font-size-toggle" class="pill-action-btn" style="height:28px; padding:0 10px; font-size:11.5px;" title="切换阅读字号">A+ 大字阅读</button>
+          
+        </div>
+      </div>
+
+      <header class="article-head-block">
+        <div style="display:flex; align-items:center; gap:9px; flex-wrap:wrap; font-size:12.5px; color:var(--ink-muted);">
+          <a href="../about.html" class="article-author-chip">
+            <img data-live-avatar src="../uploads/1795158194215-头像.png" alt="" />
+            <span>Nianyou</span>
+          </a>
+          <span>·</span>
+          <span class="cat-chip cat-coral">造物</span>
+          
+          <span class="font-mono-num">2026.11.19</span>
+          <span>·</span>
+          <span class="font-mono-num">206 字 · 1 min</span>
+        </div>
+        <h1 class="article-main-title font-serif-cn">手搓一座零依赖个人站：把赛博领地握在自己手里</h1>
+      </header>
+
+      <div class="prose">
+        <p>折腾过一圈现成框架和重型主题之后，最后还是决定自己动手写一个最干净的底座：没有打包器套娃，没有第三方图床焦虑，所有文字就是硬盘里的 <code class="inline-code">.md</code> 文件。</p>
+<p><figure class="post-figure"><img src="../uploads/evening-dusk.svg" alt="" loading="lazy" data-zoomable /></figure></p>
+<h2 id="section-1">为什么偏爱零依赖</h2>
+<p>工具越薄，写的欲望就越不容易被配置磨掉。<mark class="warm-mark">真正值得留下来的只有内容本身</mark>，而不是过两年就跑不起来的构建脚本。</p>
+<ul class="task-list"><li class="task-item done" data-task-idx="0"><span class="task-box">✓</span><span>纯本地 Markdown 与图片管理</span></li><li class="task-item done" data-task-idx="1"><span class="task-box">✓</span><span>黑胶白噪音与 Web Audio 实时合成</span></li><li class="task-item done" data-task-idx="2"><span class="task-box">✓</span><span>极客终端与全站毫秒级检索</span></li><li class="task-item " data-task-idx="3"><span class="task-box"></span><span>年底前写满十篇长文</span></li></ul>
+<blockquote><p>少即是多，但克制不代表无聊——在克制的骨架里藏一点好玩的交互彩蛋，才是独立站最大的乐趣。</p></blockquote>
+<h2 id="section-2">极简构建流</h2>
+<div class="code-block"><div class="code-header"><div class="code-dots"><span></span><span></span><span></span><em class="code-lang">bash</em></div><button type="button" class="copy-btn" data-copy>复制代码</button></div><pre><code>node blog.js dev     # 启动本地创作环境
+node blog.js build   # 生成纯净静态产物 dist/</code></pre></div>
+      </div>
+
+      <div style="margin-top:28px; display:flex; gap:10px; flex-wrap:wrap; font-size:12.5px; color:var(--ink-muted);">
+              <span>#独立站点</span><span>#极简架构</span>
+            </div>
+
+      <div class="article-end-seal font-mono-num">✦ EOF ✦</div>
+
+      <nav class="prev-next-grid">
+        <div>
+          
+        </div>
+        <div>
+          <a href="2026-11-12-zero-framework.html" class="pn-card" style="text-align:right;" >
+                  <div class="pn-hint">下一篇 →</div>
+                  <div class="pn-title font-serif-cn">把工具做减法：为什么这个博客没有用任何前端框架</div>
+                </a>
+        </div>
+      </nav>
+    </article>
+
+    
+      <aside class="margin-toc">
+        <div class="margin-toc-inner">
+          <span id="toc-marker" class="toc-active-marker"></span>
+          <div class="margin-toc-title">本文目录</div>
+          <a href="#section-1" class="">为什么偏爱零依赖</a><a href="#section-2" class="">极简构建流</a>
+        </div>
+      </aside>
+  </div>
+  </div>
+
+  <div id="global-toast" class="global-toast"></div>
+  <div id="floating-tip" class="floating-tip font-mono-num"></div>
+  <input type="file" id="global-img-picker" accept="image/*" multiple style="display:none;" />
+  <script id="spa-page-meta" type="application/json">{"activeNav":"","readingTitle":"手搓一座零依赖个人站：把赛博领地握在自己手里","searchData":[{"kind":"文章","title":"手搓一座零依赖个人站：把赛博领地握在自己手里","date":"2026-11-19","category":"造物","tags":["独立站点","极简架构"],"summary":"甩掉几百兆的 node_modules，只留纯文本、本地文件夹和自己写得懂的几百行代码。","private":false,"url":"../posts/2026-11-19-writing-guide.html"},{"kind":"文章","title":"把工具做减法：为什么这个博客没有用任何前端框架","date":"2026-11-12","category":"造物","tags":["极简","架构"],"summary":"很多时候想写博客，结果光折腾框架、装几百兆依赖包、调主题报错就把热情消耗光了。 这次干脆换了个思路：只保留 Astro 最让人舒服的设计理念——内容存成干净的纯文本、最终输出零冗余的纯静态网页、交互只在必要的地方轻量挂载，但底层完…","private":false,"url":"../posts/2026-11-12-zero-framework.html"},{"kind":"文章","title":"周末重看《完美的日子》：留一点不用倍速的时间","date":"2026-10-26","category":"随笔","tags":["电影","周末"],"summary":"周六晚上关掉手机通知，把文德斯那部片子又放了一遍。没有激烈冲突，只有清晨扫落叶的沙沙声、车载磁带里的老摇滚，还有午休抬头拍下的树影。 现在看什么都习惯按二倍速，反而这种慢得近乎固执的日常节奏最让人安心。看完顺手泡了杯热茶，觉得这个…","private":false,"url":"../posts/2026-10-26-weekend-movie.html"},{"kind":"文章","title":"年底清理旧备忘录的一点感想","date":"2025-12-20","category":"随笔","tags":["随想","年末"],"summary":"趁着年底把手机和电脑里攒了一整年的零碎备忘录翻了一遍。很多当时觉得天大的烦心事，隔了大半年再看，其实也就两行字的事。 删掉了大半过期的待办，只留下几段当时随手记下的对话和旅途片段。有些东西还是落成干净的纯文本存起来最踏实。","private":false,"url":"../posts/2025-12-20-year-end-note.html"},{"kind":"日常","title":"出门买咖啡顺手拍了三张，十一月傍晚的光线总是收得特别快。","date":"2026-11-19","category":"随手拍","tags":["天台 · 晚风"],"summary":"出门买咖啡顺手拍了三张，十一月傍晚的光线总是收得特别快。","private":false,"url":"../moments.html"},{"kind":"日常","title":"把桌面线材重新理了一遍，一下午什么正事没干，但极度舒适。","date":"2026-11-15","category":"周末","tags":["家里 · 冰美式"],"summary":"把桌面线材重新理了一遍，一下午什么正事没干，但极度舒适。","private":false,"url":"../moments.html"},{"kind":"日常","title":"降温第一天，揣着热美式绕着河边走了两公里，梧桐叶已经开始落了。","date":"2026-10-18","category":"日常","tags":["街角公园"],"summary":"降温第一天，揣着热美式绕着河边走了两公里，梧桐叶已经开始落了。","private":false,"url":"../moments.html"},{"kind":"收藏","title":"完美的日子 Perfect Days","date":"看过","category":"影视","tags":["维姆·文德斯 · 2023"],"summary":"每天清晨扫落叶、午休抬头拍树影、睡前看几页口袋书。平淡日常里最有安全感的节奏。","private":false,"url":"../shelf.html"},{"kind":"收藏","title":"置身事内","date":"在读","category":"书籍","tags":["兰小欢"],"summary":"不掉书袋，把复杂的事情用大白话讲得透彻明白，翻开就停不下来。","private":false,"url":"../shelf.html"},{"kind":"收藏","title":"星露谷物语 Stardew Valley","date":"玩过","category":"游戏","tags":["ConcernedApe"],"summary":"不知道干嘛的时候打开种两季地、钓钓鱼，永远百玩不腻。","private":false,"url":"../shelf.html"},{"kind":"收藏","title":"纯文本本地笔记工作流","date":"常用","category":"好物","tags":["Markdown + 本地文件夹"],"summary":"不用担心软件倒闭或会员涨价，自己的文字和照片全在自己硬盘里最踏实。","private":false,"url":"../shelf.html"}],"moments":[{"id":"m-1","date":"2026-11-19 18:20","mood":"随手拍","location":"天台 · 晚风","private":false,"content":"出门买咖啡顺手拍了三张，十一月傍晚的光线总是收得特别快。","images":["uploads/evening-dusk.svg","uploads/window-sunlight.svg","uploads/desk-notebook.svg"],"notes":["耳机里刚好放到坂本龙一。"],"likes":12},{"id":"m-3","date":"2026-11-15 15:10","mood":"周末","location":"家里 · 冰美式","private":false,"content":"把桌面线材重新理了一遍，一下午什么正事没干，但极度舒适。","images":["uploads/desk-notebook.svg"],"notes":[],"likes":9},{"id":"m-4","date":"2026-10-18 17:40","mood":"日常","location":"街角公园","private":false,"content":"降温第一天，揣着热美式绕着河边走了两公里，梧桐叶已经开始落了。","images":["uploads/window-sunlight.svg"],"notes":[],"likes":7}],"siteMeta":{"title":"自留地","author":"Nianyou","handle":"nianyou","avatar":"../uploads/1795158194215-头像.png","location":"江苏 · 徐州"}}</script>
+
+  <footer class="container-main site-footer">
+    <div style="display:flex; align-items:center; gap:14px; flex-wrap:wrap;">
+      <span>© 2026 自留地</span>
+      <span style="opacity:0.4;">·</span>
+      <span id="live-uptime" class="font-mono-num" data-start="2026-10-01">存活 50 天</span>
+      <span class="year-prog-wrap" title="2026 年进度 88.7%">
+        <span class="font-mono-num">2026 · 88.7%</span>
+        <span class="year-prog-track"><span class="year-prog-fill" style="width:88.7%;"></span></span>
+      </span>
+      <span id="live-fps" class="fps-badge font-mono-num">60 FPS</span>
+    </div>
+    <div style="display:flex; gap:16px; align-items:center; flex-wrap:wrap;">
+      
+      <button type="button" id="footer-meteor" style="background:none;border:none;padding:0;color:var(--ink-secondary);font-size:12.5px;cursor:pointer;" title="召唤流星雨 (S)">☄ 流星</button>
+      <button type="button" id="footer-fireworks" style="background:none;border:none;padding:0;color:var(--ink-secondary);font-size:12.5px;cursor:pointer;" title="放烟花 (F)">✦ 烟花</button>
+      <a href="../rss.xml" class="font-mono-num">RSS</a>
+    </div>
+  </footer>
+
+  <div id="utility-dock" class="floating-utility-dock">
+    <button type="button" id="dock-vinyl-btn" class="dock-orb-btn dock-vinyl-orb" data-magnetic title="黑胶电台 · 点击播放/暂停">
+      <svg class="ico" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="3"/><path d="M6 12a6 6 0 0 1 6-6"/></svg>
+    </button>
+    <button type="button" class="dock-orb-btn" data-magnetic data-random-walk title="随机漫游">
+      <svg class="ico" viewBox="0 0 24 24" style="width:14px;height:14px;"><circle cx="12" cy="12" r="10"/><polygon points="16.24 7.76 14.12 14.12 7.76 16.24 9.88 9.88 16.24 7.76"/></svg>
+    </button>
+    <button type="button" id="back-to-top" class="dock-orb-btn" data-magnetic title="回到顶部">
+      <svg class="progress-ring-svg" viewBox="0 0 42 42">
+        <circle id="progress-ring-circle" class="progress-ring-circle" cx="21" cy="21" r="19"></circle>
+      </svg>
+      <svg class="ico" viewBox="0 0 24 24" style="width:15px;height:15px;"><path d="m18 15-6-6-6 6"/></svg>
+    </button>
+  </div>
+
+  <!-- Live Chromatic Aura Popover (Body-Level to Avoid Nav Clipping) -->
+  <div id="aura-popover" class="aura-popover">
+    <button type="button" class="aura-opt" data-aura-pick="prism"><i style="background:linear-gradient(135deg,#FF6B4A,#8B5CF6,#10B981);"></i><span>流彩</span></button>
+    <button type="button" class="aura-opt" data-aura-pick="cyber"><i style="background:linear-gradient(135deg,#06B6D4,#EC4899,#8B5CF6);"></i><span>霓虹</span></button>
+    <button type="button" class="aura-opt" data-aura-pick="aurora"><i style="background:linear-gradient(135deg,#10B981,#0EA5E9,#F59E0B);"></i><span>极光</span></button>
+    <button type="button" class="aura-opt" data-aura-pick="nebula"><i style="background:linear-gradient(135deg,#8B5CF6,#4F46E5,#F43F5E);"></i><span>星云</span></button>
+    <button type="button" class="aura-opt" data-aura-pick="sunset"><i style="background:linear-gradient(135deg,#F97316,#EC4899,#EAB308);"></i><span>霞光</span></button>
+  </div>
+
+  <!-- Bespoke Categorized Frosted-Glass Right-Click Context Menu -->
+  <div id="custom-ctx-menu" class="ctx-menu">
+    <div class="ctx-group-label">漫游与常用</div>
+    <button type="button" class="ctx-item" data-ctx-act="random"><span>随机漫游一篇</span><span class="ctx-key">R</span></button>
+    <button type="button" class="ctx-item" data-ctx-act="search"><span>搜索与快捷指令</span><span class="ctx-key">⌘K</span></button>
+    <button type="button" class="ctx-item" data-ctx-act="copy-url"><span>复制本页链接</span><span class="ctx-key">⌘C</span></button>
+
+    <div class="ctx-sep"></div>
+    <div class="ctx-group-label">光影与视效</div>
+    <button type="button" class="ctx-item" data-ctx-act="theme"><span>切换日夜光影</span><span class="ctx-key">D</span></button>
+    <button type="button" class="ctx-item" data-ctx-act="aura"><span>切换全站幻彩光谱</span><span class="ctx-key">C</span></button>
+    <button type="button" class="ctx-item" data-ctx-act="matrix"><span>切换星尘 / 代码雨</span><span class="ctx-key">M</span></button>
+    <button type="button" class="ctx-item" data-ctx-act="meteor"><span>召唤漫天流星雨</span><span class="ctx-key">S</span></button>
+    <button type="button" class="ctx-item" data-ctx-act="fireworks"><span>绽放屏幕烟花秀</span><span class="ctx-key">F</span></button>
+
+    <div class="ctx-sep"></div>
+    <div class="ctx-group-label">声音与分项音效</div>
+    <div class="ctx-vol-row">
+      <span>全站总音量</span>
+      <input id="ctx-master-vol" type="range" min="0" max="100" value="85" class="ctx-vol-slider" />
+      <span id="ctx-vol-pct" class="font-mono-num ctx-vol-num">85%</span>
+    </div>
+    <button type="button" class="ctx-item" data-sfx-sub="gravity"><span>引力漩涡音效</span><span class="ctx-switch" id="ctx-sw-gravity">已开</span></button>
+    <button type="button" class="ctx-item" data-sfx-sub="mech"><span>机械轴按键音</span><span class="ctx-switch" id="ctx-sw-mech">已开</span></button>
+    <button type="button" class="ctx-item" data-sfx-sub="chime"><span>琴键与街机音</span><span class="ctx-switch" id="ctx-sw-chime">已开</span></button>
+
+    <div class="ctx-sep"></div>
+    <div class="ctx-group-label">电台与极客</div>
+    <button type="button" class="ctx-item" data-ctx-act="vinyl"><span id="ctx-vinyl-label">播放黑胶电台</span><span class="ctx-key">P</span></button>
+    <button type="button" class="ctx-item" data-ctx-act="next-track"><span>切换下一首电台</span><span class="ctx-key">N</span></button>
+    <button type="button" class="ctx-item" data-ctx-act="terminal"><span>打开极客终端</span><span class="ctx-key">~</span></button>
+    <button type="button" class="ctx-item" data-ctx-act="snake"><span>终端霓虹贪吃蛇</span><span class="ctx-key">Snake</span></button>
+  </div>
+
+  <!-- Cyberpunk / macOS Geek Terminal HUD -->
+  <div id="geek-terminal" class="modal-backdrop">
+    <div class="term-window">
+      <div class="term-titlebar">
+        <div class="term-dots">
+          <button type="button" id="term-close-dot" class="tdot red" title="关闭"></button>
+          <span class="tdot yellow"></span>
+          <span class="tdot green"></span>
+        </div>
+        <span class="font-mono-num" style="font-size:12px; color:#9A948C;">guest@ziliudi: ~ (zsh)</span>
+        <span class="font-mono-num" style="font-size:11px; color:#6D6760;">ESC</span>
+      </div>
+      <div id="term-output" class="term-output font-mono-num"></div>
+      <div class="term-quick-chips">
+        <button type="button" data-term-cmd="neofetch">neofetch</button>
+        <button type="button" data-term-cmd="snake">snake</button>
+        <button type="button" data-term-cmd="meteor">meteor</button>
+        <button type="button" data-term-cmd="fireworks">fireworks</button>
+        <button type="button" data-term-cmd="aura">aura</button>
+        <button type="button" data-term-cmd="matrix">matrix</button>
+        <button type="button" data-term-cmd="play">play</button>
+        <button type="button" data-term-cmd="ls">ls</button>
+        <button type="button" data-term-cmd="random">random</button>
+        <button type="button" data-term-cmd="theme">theme</button>
+        <button type="button" data-term-cmd="clear">clear</button>
+      </div>
+      <div class="term-prompt-row font-mono-num">
+        <span class="term-prompt-arrow">➜ ~</span>
+        <input id="term-input" type="text" spellcheck="false" autocomplete="off" placeholder="help" />
+      </div>
+    </div>
+  </div>
+
+  <div id="lightbox" class="lightbox-backdrop">
+    <button type="button" id="lb-prev" class="lb-nav-btn lb-prev" title="上一张"><svg class="ico" viewBox="0 0 24 24" style="width:15px;height:15px;"><path d="m15 18-6-6 6-6"/></svg></button>
+    <img id="lb-img" class="lightbox-img" src="" alt="" />
+    <button type="button" id="lb-next" class="lb-nav-btn lb-next" title="下一张"><svg class="ico" viewBox="0 0 24 24" style="width:15px;height:15px;"><path d="m9 18 6-6-6-6"/></svg></button>
+    <div id="lb-caption" class="lb-caption"></div>
+  </div>
+
+  <!-- Prose Text Selection Floating Action Pill & High-DPI Quote Poster Studio -->
+  <div id="prose-quote-bar" class="prose-quote-bar">
+    <button type="button" id="pq-copy-btn">复制摘录</button>
+    <span class="pq-div"></span>
+    <button type="button" id="pq-poster-btn">✦ 生成金句卡</button>
+  </div>
+
+  <div id="quote-poster-modal" class="modal-backdrop">
+    <div class="modal-box poster-modal-box">
+      <div class="poster-modal-head">
+        <strong class="font-serif-cn" style="font-size:16px;">流光金句海报</strong>
+        <button type="button" id="poster-close-btn" class="ui-clear-btn visible" title="关闭">×</button>
+      </div>
+      <div class="poster-canvas-wrap">
+        <canvas id="poster-canvas" width="880" height="1100"></canvas>
+      </div>
+      <div class="poster-controls-bar">
+        <div class="poster-theme-dots" id="poster-themes">
+          <button type="button" class="pt-dot active" data-poster-theme="dawn" style="background:linear-gradient(135deg,#FFF7ED,#FCE7F3,#E0E7FF);" title="流彩黎明"></button>
+          <button type="button" class="pt-dot" data-poster-theme="cyber" style="background:linear-gradient(135deg,#0F172A,#311042,#083344);" title="暗夜霓虹"></button>
+          <button type="button" class="pt-dot" data-poster-theme="aurora" style="background:linear-gradient(135deg,#ECFDF5,#E0F2FE,#FEF3C7);" title="极光薄荷"></button>
+          <button type="button" class="pt-dot" data-poster-theme="nebula" style="background:linear-gradient(135deg,#1E1B4B,#4C1D95,#831843);" title="深空暮紫"></button>
+        </div>
+        <div style="display:flex; gap:8px;">
+          <button type="button" id="poster-copy-img" class="btn-secondary">复制图片</button>
+          <button type="button" id="poster-download-btn" class="btn-primary">下载 PNG</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Full-Site Spotlight Search & Command Palette Modal -->
+  <div id="search-modal" class="modal-backdrop">
+    <div class="modal-box" style="background:var(--card-tinted);">
+      <div class="ui-input-wrap" style="height:44px; padding:0 14px; margin-bottom:10px; border-radius:12px;">
+        <span class="ui-input-icon"><svg class="ico" viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg></span>
+        <input id="search-input" type="text" placeholder="搜索文章日常，或输入 > 执行快捷指令…" />
+        <button type="button" id="search-clear-btn" class="ui-clear-btn" title="清空">×</button>
+        <span class="ui-kbd">ESC</span>
+      </div>
+      <div id="search-results" style="max-height:340px; overflow-y:auto; display:grid; gap:4px;"></div>
+    </div>
+  </div>
+
+  <script>
+    window.__SEARCH_INDEX__ = [{"kind":"文章","title":"手搓一座零依赖个人站：把赛博领地握在自己手里","date":"2026-11-19","category":"造物","tags":["独立站点","极简架构"],"summary":"甩掉几百兆的 node_modules，只留纯文本、本地文件夹和自己写得懂的几百行代码。","private":false,"url":"../posts/2026-11-19-writing-guide.html"},{"kind":"文章","title":"把工具做减法：为什么这个博客没有用任何前端框架","date":"2026-11-12","category":"造物","tags":["极简","架构"],"summary":"很多时候想写博客，结果光折腾框架、装几百兆依赖包、调主题报错就把热情消耗光了。 这次干脆换了个思路：只保留 Astro 最让人舒服的设计理念——内容存成干净的纯文本、最终输出零冗余的纯静态网页、交互只在必要的地方轻量挂载，但底层完…","private":false,"url":"../posts/2026-11-12-zero-framework.html"},{"kind":"文章","title":"周末重看《完美的日子》：留一点不用倍速的时间","date":"2026-10-26","category":"随笔","tags":["电影","周末"],"summary":"周六晚上关掉手机通知，把文德斯那部片子又放了一遍。没有激烈冲突，只有清晨扫落叶的沙沙声、车载磁带里的老摇滚，还有午休抬头拍下的树影。 现在看什么都习惯按二倍速，反而这种慢得近乎固执的日常节奏最让人安心。看完顺手泡了杯热茶，觉得这个…","private":false,"url":"../posts/2026-10-26-weekend-movie.html"},{"kind":"文章","title":"年底清理旧备忘录的一点感想","date":"2025-12-20","category":"随笔","tags":["随想","年末"],"summary":"趁着年底把手机和电脑里攒了一整年的零碎备忘录翻了一遍。很多当时觉得天大的烦心事，隔了大半年再看，其实也就两行字的事。 删掉了大半过期的待办，只留下几段当时随手记下的对话和旅途片段。有些东西还是落成干净的纯文本存起来最踏实。","private":false,"url":"../posts/2025-12-20-year-end-note.html"},{"kind":"日常","title":"出门买咖啡顺手拍了三张，十一月傍晚的光线总是收得特别快。","date":"2026-11-19","category":"随手拍","tags":["天台 · 晚风"],"summary":"出门买咖啡顺手拍了三张，十一月傍晚的光线总是收得特别快。","private":false,"url":"../moments.html"},{"kind":"日常","title":"把桌面线材重新理了一遍，一下午什么正事没干，但极度舒适。","date":"2026-11-15","category":"周末","tags":["家里 · 冰美式"],"summary":"把桌面线材重新理了一遍，一下午什么正事没干，但极度舒适。","private":false,"url":"../moments.html"},{"kind":"日常","title":"降温第一天，揣着热美式绕着河边走了两公里，梧桐叶已经开始落了。","date":"2026-10-18","category":"日常","tags":["街角公园"],"summary":"降温第一天，揣着热美式绕着河边走了两公里，梧桐叶已经开始落了。","private":false,"url":"../moments.html"},{"kind":"收藏","title":"完美的日子 Perfect Days","date":"看过","category":"影视","tags":["维姆·文德斯 · 2023"],"summary":"每天清晨扫落叶、午休抬头拍树影、睡前看几页口袋书。平淡日常里最有安全感的节奏。","private":false,"url":"../shelf.html"},{"kind":"收藏","title":"置身事内","date":"在读","category":"书籍","tags":["兰小欢"],"summary":"不掉书袋，把复杂的事情用大白话讲得透彻明白，翻开就停不下来。","private":false,"url":"../shelf.html"},{"kind":"收藏","title":"星露谷物语 Stardew Valley","date":"玩过","category":"游戏","tags":["ConcernedApe"],"summary":"不知道干嘛的时候打开种两季地、钓钓鱼，永远百玩不腻。","private":false,"url":"../shelf.html"},{"kind":"收藏","title":"纯文本本地笔记工作流","date":"常用","category":"好物","tags":["Markdown + 本地文件夹"],"summary":"不用担心软件倒闭或会员涨价，自己的文字和照片全在自己硬盘里最踏实。","private":false,"url":"../shelf.html"}];
+    window.__TYPEWRITER__ = ["深夜写码，白天补觉","正在折腾好玩的小东西","按 ` 键或右键解锁彩蛋"];
+    window.__MOMENTS__ = [{"id":"m-1","date":"2026-11-19 18:20","mood":"随手拍","location":"天台 · 晚风","private":false,"content":"出门买咖啡顺手拍了三张，十一月傍晚的光线总是收得特别快。","images":["uploads/evening-dusk.svg","uploads/window-sunlight.svg","uploads/desk-notebook.svg"],"notes":["耳机里刚好放到坂本龙一。"],"likes":12},{"id":"m-3","date":"2026-11-15 15:10","mood":"周末","location":"家里 · 冰美式","private":false,"content":"把桌面线材重新理了一遍，一下午什么正事没干，但极度舒适。","images":["uploads/desk-notebook.svg"],"notes":[],"likes":9},{"id":"m-4","date":"2026-10-18 17:40","mood":"日常","location":"街角公园","private":false,"content":"降温第一天，揣着热美式绕着河边走了两公里，梧桐叶已经开始落了。","images":["uploads/window-sunlight.svg"],"notes":[],"likes":7}];
+    window.__SITE_META__ = {"title":"自留地","author":"Nianyou","handle":"nianyou","avatar":"../uploads/1795158194215-头像.png","location":"江苏 · 徐州"};
+    window.__LOCAL_DEV__ = false;
+  </script>
+  <script src="../assets/client.js"></script>
+  
+</body>
+</html>

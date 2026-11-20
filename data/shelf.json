@@ -1,0 +1,46 @@
+[
+  {
+    "id": "s-1",
+    "type": "影视",
+    "status": "看过",
+    "title": "完美的日子 Perfect Days",
+    "creator": "维姆·文德斯 · 2023",
+    "rating": 5,
+    "tone": "sage",
+    "cover": "uploads/window-sunlight.svg",
+    "comment": "每天清晨扫落叶、午休抬头拍树影、睡前看几页口袋书。平淡日常里最有安全感的节奏。"
+  },
+  {
+    "id": "s-2",
+    "type": "书籍",
+    "status": "在读",
+    "title": "置身事内",
+    "creator": "兰小欢",
+    "rating": 5,
+    "tone": "terracotta",
+    "cover": "",
+    "comment": "不掉书袋，把复杂的事情用大白话讲得透彻明白，翻开就停不下来。"
+  },
+  {
+    "id": "s-3",
+    "type": "游戏",
+    "status": "玩过",
+    "title": "星露谷物语 Stardew Valley",
+    "creator": "ConcernedApe",
+    "rating": 5,
+    "tone": "sand",
+    "cover": "uploads/evening-dusk.svg",
+    "comment": "不知道干嘛的时候打开种两季地、钓钓鱼，永远百玩不腻。"
+  },
+  {
+    "id": "s-4",
+    "type": "好物",
+    "status": "常用",
+    "title": "纯文本本地笔记工作流",
+    "creator": "Markdown + 本地文件夹",
+    "rating": 5,
+    "tone": "slate",
+    "cover": "uploads/desk-notebook.svg",
+    "comment": "不用担心软件倒闭或会员涨价，自己的文字和照片全在自己硬盘里最踏实。"
+  }
+]

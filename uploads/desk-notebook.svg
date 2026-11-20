@@ -1,0 +1,67 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="800" height="600" viewBox="0 0 800 600">
+  <defs>
+    <linearGradient id="deskBg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#1E293B"/>
+      <stop offset="50%" stop-color="#1E1B4B"/>
+      <stop offset="100%" stop-color="#31102F"/>
+    </linearGradient>
+    <radialGradient id="lampGlow" cx="0.22" cy="0.18" r="0.65">
+      <stop offset="0%" stop-color="#F59E0B" stop-opacity="0.38"/>
+      <stop offset="55%" stop-color="#EC4899" stop-opacity="0.14"/>
+      <stop offset="100%" stop-color="#6366F1" stop-opacity="0"/>
+    </radialGradient>
+    <linearGradient id="padGrad" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#0F172A"/>
+      <stop offset="100%" stop-color="#1E1B4B"/>
+    </linearGradient>
+  </defs>
+
+  <rect width="800" height="600" fill="url(#deskBg)"/>
+  <rect width="800" height="600" fill="url(#lampGlow)"/>
+
+  <!-- Desk Mat with Subtle Neon Cyan-Violet Trim -->
+  <rect x="74" y="88" width="652" height="424" rx="28" fill="url(#padGrad)" stroke="#6366F1" stroke-opacity="0.45" stroke-width="2"/>
+
+  <!-- Open Cream Notebook with Colorful Highlights -->
+  <g transform="rotate(-5 350 300)">
+    <rect x="166" y="148" width="356" height="268" rx="10" fill="#FFFDF9"/>
+    <line x1="344" y1="154" x2="344" y2="410" stroke="#E2E8F0" stroke-width="2"/>
+    <!-- Left Page Lines & Coral/Mint Highlights -->
+    <rect x="192" y="180" width="96" height="10" rx="5" fill="#F43F5E" opacity="0.25"/>
+    <rect x="192" y="206" width="126" height="6" rx="3" fill="#CBD5E1"/>
+    <rect x="192" y="224" width="114" height="6" rx="3" fill="#CBD5E1"/>
+    <rect x="192" y="242" width="122" height="6" rx="3" fill="#CBD5E1"/>
+    <rect x="192" y="270" width="84" height="10" rx="5" fill="#10B981" opacity="0.28"/>
+    <rect x="192" y="294" width="118" height="6" rx="3" fill="#CBD5E1"/>
+    <rect x="192" y="312" width="92" height="6" rx="3" fill="#CBD5E1"/>
+
+    <!-- Right Page Colorful Sketch Card & Sticky Note -->
+    <rect x="368" y="180" width="128" height="84" rx="8" fill="#EDE9FE"/>
+    <circle cx="402" cy="212" r="14" fill="#8B5CF6" opacity="0.75"/>
+    <path d="M368 248 Q410 222 452 240 T496 230 L496 264 L368 264 Z" fill="#38BDF8" opacity="0.65"/>
+    <rect x="368" y="282" width="120" height="6" rx="3" fill="#CBD5E1"/>
+    <rect x="368" y="300" width="104" height="6" rx="3" fill="#CBD5E1"/>
+    <rect x="424" y="326" width="74" height="62" rx="6" fill="#FEF08A"/>
+  </g>
+
+  <!-- Mechanical Keycap Mini Macro Pad (Top Right) -->
+  <rect x="558" y="132" width="118" height="84" rx="14" fill="#1E293B" stroke="#38BDF8" stroke-opacity="0.5" stroke-width="1.5"/>
+  <rect x="572" y="146" width="26" height="24" rx="6" fill="#F43F5E"/>
+  <rect x="604" y="146" width="26" height="24" rx="6" fill="#8B5CF6"/>
+  <rect x="636" y="146" width="26" height="24" rx="6" fill="#06B6D4"/>
+  <rect x="572" y="176" width="26" height="24" rx="6" fill="#10B981"/>
+  <rect x="604" y="176" width="58" height="24" rx="6" fill="#F59E0B"/>
+
+  <!-- Warm Ceramic Coffee Mug -->
+  <circle cx="614" cy="336" r="48" fill="#F8FAFC"/>
+  <circle cx="614" cy="336" r="37" fill="#451A03"/>
+  <path d="M598 322 A22 22 0 0 1 628 318" stroke="#D97706" stroke-width="3.5" stroke-linecap="round" fill="none" opacity="0.75"/>
+  <rect x="656" y="326" width="18" height="20" rx="7" fill="#F8FAFC"/>
+
+  <!-- Sleek Coral-Gold Fountain Pen -->
+  <g transform="rotate(26 490 442)">
+    <rect x="390" y="436" width="196" height="11" rx="5.5" fill="#F43F5E"/>
+    <rect x="468" y="436" width="10" height="11" fill="#FBBF24"/>
+    <polygon points="586,436 606,441.5 586,447" fill="#FDE047"/>
+  </g>
+</svg>

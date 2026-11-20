@@ -1,0 +1,52 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 240 240" fill="none">
+  <defs>
+    <linearGradient id="bg" x1="20" y1="16" x2="220" y2="228" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#26221E"/>
+      <stop offset="1" stop-color="#151311"/>
+    </linearGradient>
+    <radialGradient id="glow" cx="0" cy="0" r="1" gradientUnits="userSpaceOnUse" gradientTransform="translate(176 58) rotate(132) scale(138)">
+      <stop offset="0" stop-color="#DF8568" stop-opacity="0.42"/>
+      <stop offset="1" stop-color="#DF8568" stop-opacity="0"/>
+    </radialGradient>
+    <linearGradient id="coat" x1="120" y1="142" x2="120" y2="240" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#B8563A"/>
+      <stop offset="1" stop-color="#7E3520"/>
+    </linearGradient>
+  </defs>
+
+  <rect width="240" height="240" rx="120" fill="url(#bg)"/>
+  <rect width="240" height="240" rx="120" fill="url(#glow)"/>
+
+  <!-- Subtle constellation stars -->
+  <circle cx="52" cy="64" r="2" fill="#EAE0D5" opacity="0.45"/>
+  <circle cx="188" cy="54" r="2.5" fill="#F2B880" opacity="0.7"/>
+  <circle cx="196" cy="92" r="1.6" fill="#EAE0D5" opacity="0.35"/>
+  <circle cx="44" cy="116" r="1.5" fill="#8EC7A8" opacity="0.5"/>
+
+  <!-- Hoodie / Shoulders -->
+  <path d="M46 240C51 186 78 158 120 158C162 158 189 186 194 240H46Z" fill="url(#coat)"/>
+  <path d="M88 160L120 194L152 160" stroke="#F5ECE2" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round" opacity="0.55"/>
+
+  <!-- Neck & Face -->
+  <rect x="106" y="134" width="28" height="28" rx="12" fill="#EACBB0"/>
+  <rect x="78" y="64" width="84" height="84" rx="40" fill="#F4DAC2"/>
+
+  <!-- Stylized Hair -->
+  <path d="M74 102C74 68 94 50 123 50C151 50 168 68 166 100C158 84 145 77 126 78C105 79 88 86 74 102Z" fill="#231F1C"/>
+  <path d="M75 96C82 70 102 58 128 60C114 67 104 75 98 87C90 83 82 87 75 96Z" fill="#352F2B"/>
+
+  <!-- Minimalist Half-Rim Glasses with Subtle Terminal Glint -->
+  <rect x="88" y="99" width="26" height="17" rx="5" fill="#1E1B18" fill-opacity="0.12" stroke="#231F1C" stroke-width="3.2"/>
+  <rect x="126" y="99" width="26" height="17" rx="5" fill="#1E1B18" fill-opacity="0.12" stroke="#231F1C" stroke-width="3.2"/>
+  <path d="M114 106H126" stroke="#231F1C" stroke-width="3" stroke-linecap="round"/>
+  <path d="M94 104L100 111" stroke="#8EC7A8" stroke-width="2" stroke-linecap="round" opacity="0.85"/>
+  <path d="M132 104L138 111" stroke="#8EC7A8" stroke-width="2" stroke-linecap="round" opacity="0.85"/>
+
+  <!-- Calm Expression -->
+  <path d="M112 128C117 131.5 123 131.5 128 128" stroke="#8C5843" stroke-width="3" stroke-linecap="round"/>
+
+  <!-- Headphones Arch -->
+  <path d="M72 108C72 74 92 52 120 52C148 52 168 74 168 108" stroke="#DF8568" stroke-width="4.5" stroke-linecap="round"/>
+  <rect x="65" y="98" width="11" height="24" rx="5.5" fill="#DF8568"/>
+  <rect x="164" y="98" width="11" height="24" rx="5.5" fill="#DF8568"/>
+</svg>
