@@ -778,22 +778,22 @@ function startDevServer(preferredPort = 4321) {
       }
 
       if (pathname === '/assets/styles.css') {
-        res.writeHead(200, { 'Content-Type': 'text/css; charset=utf-8' });
+        res.writeHead(200, { 'Content-Type': 'text/css; charset=utf-8', 'Cache-Control': 'no-store' });
         res.end(fs.readFileSync(path.join(SRC_DIR, 'styles.css'), 'utf8'));
         return;
       }
       if (pathname === '/assets/studio.css') {
-        res.writeHead(200, { 'Content-Type': 'text/css; charset=utf-8' });
+        res.writeHead(200, { 'Content-Type': 'text/css; charset=utf-8', 'Cache-Control': 'no-store' });
         res.end(fs.readFileSync(path.join(SRC_DIR, 'studio.css'), 'utf8'));
         return;
       }
       if (pathname === '/assets/client.js') {
-        res.writeHead(200, { 'Content-Type': 'application/javascript; charset=utf-8' });
+        res.writeHead(200, { 'Content-Type': 'application/javascript; charset=utf-8', 'Cache-Control': 'no-store' });
         res.end(fs.readFileSync(path.join(SRC_DIR, 'client.js'), 'utf8'));
         return;
       }
       if (pathname === '/assets/studio.js') {
-        res.writeHead(200, { 'Content-Type': 'application/javascript; charset=utf-8' });
+        res.writeHead(200, { 'Content-Type': 'application/javascript; charset=utf-8', 'Cache-Control': 'no-store' });
         res.end(fs.readFileSync(path.join(SRC_DIR, 'studio.js'), 'utf8'));
         return;
       }

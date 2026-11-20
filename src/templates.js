@@ -31,7 +31,6 @@ const ICO = {
   repo: `<svg class="ico" viewBox="0 0 24 24" style="width:14px;height:14px;"><path d="M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H20v20H6.5a2.5 2.5 0 0 1 0-5H20"/></svg>`,
   camera: `<svg class="ico" viewBox="0 0 24 24" style="width:14px;height:14px;"><path d="M14.5 4h-5L7 7H4a2 2 0 0 0-2 2v9a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2h-3l-2.5-3z"/><circle cx="12" cy="13" r="3"/></svg>`,
   calendar: `<svg class="ico" viewBox="0 0 24 24" style="width:13.5px;height:13.5px;"><rect width="18" height="18" x="3" y="4" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>`,
-  palette: `<svg class="ico" viewBox="0 0 24 24"><circle cx="13.5" cy="6.5" r=".7" fill="currentColor"/><circle cx="17.5" cy="10.5" r=".7" fill="currentColor"/><circle cx="8.5" cy="7.5" r=".7" fill="currentColor"/><circle cx="6.5" cy="12.5" r=".7" fill="currentColor"/><path d="M12 2C6.5 2 2 6.5 2 12s4.5 10 10 10c.93 0 1.65-.75 1.65-1.69 0-.44-.18-.84-.44-1.12-.29-.29-.44-.65-.44-1.13a1.64 1.64 0 0 1 1.67-1.67h2c3.05 0 5.55-2.5 5.55-5.55C21.96 6.01 17.46 2 12 2z"/></svg>`,
   dice: `<svg class="ico" viewBox="0 0 24 24" style="width:13.5px;height:13.5px;"><rect width="18" height="18" x="3" y="3" rx="3.5"/><circle cx="8.5" cy="8.5" r="1.2" fill="currentColor"/><circle cx="15.5" cy="15.5" r="1.2" fill="currentColor"/><circle cx="12" cy="12" r="1.2" fill="currentColor"/></svg>`,
   soundOn: `<svg class="ico" viewBox="0 0 24 24"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M15.54 8.46a5 5 0 0 1 0 7.07"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14"/></svg>`,
   soundOff: `<svg class="ico" viewBox="0 0 24 24"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><line x1="22" x2="16" y1="9" y2="15"/><line x1="16" x2="22" y1="9" y2="15"/></svg>`,
@@ -328,12 +327,7 @@ function renderLayout({
       </span>
       <span id="live-fps" class="fps-badge font-mono-num">60 FPS</span>
     </div>
-    <div style="display:flex; gap:16px; align-items:center; flex-wrap:wrap;">
-      ${localDev ? `<a href="${rootPrefix}studio.html?tab=settings" data-owner-only="1" style="color:var(--accent); display:inline-flex; align-items:center; gap:5px;">${ICO.sliders}<span>设置</span></a>` : ''}
-      <button type="button" id="footer-meteor" style="background:none;border:none;padding:0;color:var(--ink-secondary);font-size:12.5px;cursor:pointer;" title="召唤流星雨 (S)">☄ 流星</button>
-      <button type="button" id="footer-fireworks" style="background:none;border:none;padding:0;color:var(--ink-secondary);font-size:12.5px;cursor:pointer;" title="放烟花 (F)">✦ 烟花</button>
-      <a href="${rootPrefix}rss.xml" class="font-mono-num">RSS</a>
-    </div>
+    ${localDev ? `<div style="display:flex; gap:16px; align-items:center; flex-wrap:wrap;"><a href="${rootPrefix}studio.html?tab=settings" data-owner-only="1" style="color:var(--accent); display:inline-flex; align-items:center; gap:5px;">${ICO.sliders}<span>设置</span></a></div>` : ''}
   </footer>
 
   <div id="utility-dock" class="floating-utility-dock">
@@ -403,8 +397,8 @@ function renderLayout({
           <span class="tdot yellow"></span>
           <span class="tdot green"></span>
         </div>
-        <span class="font-mono-num" style="font-size:12px; color:#9A948C;">guest@ziliudi: ~ (zsh)</span>
-        <span class="font-mono-num" style="font-size:11px; color:#6D6760;">ESC</span>
+        <span class="font-mono-num" style="font-size:12px; color:#9A948C;">guest@${escapeHtml(site.handle || 'nianyou')}: ~ (zsh)</span>
+        <button type="button" id="term-esc-btn" class="font-mono-num" style="background:none; border:none; padding:0; font-size:11px; color:#6D6760; cursor:pointer;" title="关闭终端 (ESC)">ESC</button>
       </div>
       <div id="term-output" class="term-output font-mono-num"></div>
       <div class="term-quick-chips">

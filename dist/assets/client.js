@@ -787,10 +787,6 @@
       const curFootSet = document.querySelector('.site-footer a[href*="studio.html"]');
       if (nextFootSet && curFootSet) curFootSet.setAttribute('href', nextFootSet.getAttribute('href'));
 
-      const nextFootRss = doc.querySelector('.site-footer a[href$="rss.xml"]');
-      const curFootRss = document.querySelector('.site-footer a[href$="rss.xml"]');
-      if (nextFootRss && curFootRss) curFootRss.setAttribute('href', nextFootRss.getAttribute('href'));
-
       hideFloatingTip();
 
       doc.querySelectorAll('[data-nav-key]').forEach(nextLink => {
@@ -2567,9 +2563,6 @@
     return fxMode;
   }
 
-  document.getElementById('footer-fireworks')?.addEventListener('click', () => launchFireworks(5));
-  document.getElementById('footer-meteor')?.addEventListener('click', () => launchMeteorShower(14));
-
   // --- Live Chromatic Aura Palette Switcher ---
   const AURA_LIST = [
     { id: 'prism', name: '流彩' },
@@ -3297,6 +3290,7 @@
 
   document.getElementById('terminal-open')?.addEventListener('click', openTerminal);
   document.getElementById('term-close-dot')?.addEventListener('click', closeTerminal);
+  document.getElementById('term-esc-btn')?.addEventListener('click', closeTerminal);
   termModal?.addEventListener('click', e => {
     if (e.target === termModal) closeTerminal();
   });
